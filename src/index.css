@@ -1,0 +1,165 @@
+/* Global theme */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  scroll-behavior: smooth;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+:root {
+  --bg: #ffffff;
+  --surface: rgba(255, 255, 255, 0.9);
+  --text: #111827;
+  --muted: #4b5563;
+  --border: rgba(15, 23, 42, 0.12);
+  --gradient-color: linear-gradient(45deg, #614385, #516395);
+}
+
+.btn-gradient {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 19px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--gradient-color);
+  color: #ffffff;
+  cursor: pointer;
+  transition:
+    filter 160ms ease,
+    transform 160ms ease;
+}
+
+.btn-gradient:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+.btn-gradient:active {
+  filter: brightness(0.95);
+  transform: translateY(0);
+}
+.text-muted {
+  color: var(--muted);
+}
+
+.bg-surface {
+  background: var(--surface);
+}
+
+/* Basic form layout for login/register pages */
+.from-group,
+.form-group {
+  position: relative;
+  max-width: 420px;
+  margin: 64px auto;
+  padding: 32px 28px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(10px);
+}
+
+.from-group::before,
+.form-group::before {
+  display: block;
+  content: "";
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.from-group::before {
+  content: "Log in";
+}
+
+.form-group::before {
+  content: "Register";
+}
+
+.from-group h1,
+.form-group h1 {
+  margin-bottom: 8px;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+}
+
+.form-item {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.form-item label {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.form-item input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.9);
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.form-item input:focus {
+  outline: none;
+  border-color: rgba(97, 67, 133, 0.6);
+  box-shadow: 0 0 0 4px rgba(97, 67, 133, 0.12);
+}
+
+.from-group .btn-gradient,
+.form-group .btn-gradient {
+  width: 100%;
+  padding: 14px 18px;
+  font-weight: 600;
+}
+
+.from-group p,
+.form-group p {
+  font-size: 15px;
+  color: var(--muted);
+  margin-top: 21px;
+  text-align: center;
+}
+
+.from-group a,
+.form-group a {
+  color: #4b00ff;
+  font-weight: 600;
+}
+.footer_text {
+  text-align: center;
+  margin-top: 21px;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+@media (max-width: 480px) {
+  .from-group,
+  .form-group {
+    margin: 32px 16px;
+    padding: 28px 20px;
+  }
+}
