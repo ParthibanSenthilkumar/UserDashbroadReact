@@ -61,7 +61,7 @@ const Register = () => {
               <input
                 type="text"
                 value={user}
-                placeholder="enter the Email"
+                placeholder="enter the username"
                 onChange={(e) => setuser(e.target.value)}
               />
             </div>

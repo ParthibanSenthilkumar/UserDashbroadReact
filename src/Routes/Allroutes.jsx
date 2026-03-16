@@ -2,7 +2,7 @@ import React from 'react'
 import {Route, Routes } from 'react-router-dom'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
-import Dashbroad from '../pages/Dashboard'
+import Dashboard from '../pages/Dashboard'
 
 const Allroutes = () => {
   return (
