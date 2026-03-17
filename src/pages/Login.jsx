@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { errorToast, successToast } from "../Components/Toaster";
 import Loader from "../Components/Loader";
+import { Container,Col,Row } from "react-bootstrap";
 
 const Login = () => {
   let [useLog, setlog] = useState("");
@@ -36,7 +37,7 @@ let navigate = useNavigate();
     setlog('')
     setpass('')
     successToast("Login Successfull"),
-    navigate("/dashbroad")
+    navigate("/dashboard")
     }
     catch (error) {
        errorToast(error.message)
@@ -49,12 +50,21 @@ let navigate = useNavigate();
 
   return (
     <>
+      <Container>
+        <Row>
     {loading ? ( <div className="d-flex align-items-center justify-content-center vh-100 vw-100"><Loader /></div> ) :(
+      <>
+      <Col lg={6}  className="d-flex justify-content-center align-items-center">
+        <div  className="left-side">
+        <img src={'https://img.freepik.com/free-vector/businessman-businesswoman-looking-computer-monitor_1262-21450.jpg'} alt="login image  " />
+        </div>
+      </Col>
+      <Col lg={6} className="right-side">
     <div className="from-group">
       <form onSubmit={handleSubmit}>
 
           <div className="form-item">
-            <label>Email </label>
+            
             <input
               type="text"
               value={useLog}
@@ -63,7 +73,7 @@ let navigate = useNavigate();
             />
           </div>
           <div className="form-item">
-            <label>Email </label>
+            
             <input
               type="password"
               value={userpass}
@@ -75,8 +85,12 @@ let navigate = useNavigate();
 
         <h5 className="footer_text">Don't have an account? <Link to="/register">Register</Link></h5>
       </form>
-      </div>
+    </div>
+      </Col>
+      </>
     )}
+      </Row>
+      </Container>
     </>
   );
 };

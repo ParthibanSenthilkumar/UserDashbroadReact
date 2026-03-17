@@ -1,192 +1,262 @@
 ﻿import React, { useState } from "react";
 import { auth } from "../Firebase";
-import { data, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Loader from "../Components/Loader";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { errorToast, successToast } from "../Components/Toaster";
+import { Container, Row, Col } from "react-bootstrap";
 
 const Register = () => {
-  let [useremail, setemail] = useState("");
-  let [loading, setloading] = useState(false);
-  let [userpass, setpass] = useState("");
-  let [user, setuser] = useState("");
-  let [userAge, setAge] = useState("");
-  let [userText, setText] = useState("");
-  let [region, setregion] = useState("");
-  let [useradio, setradio] = useState("");
-  let [imgUrl, setimgurl] = useState("");
-  let [skils, setskils] = useState([]);
+  const [useremail, setemail] = useState("");
+  const [loading, setloading] = useState(false);
+  const [userpass, setpass] = useState("");
+  const [user, setuser] = useState("");
+  const [userAge, setAge] = useState("");
+  const [userText, setText] = useState("");
+  const [region, setregion] = useState("");
+  const [useradio, setradio] = useState("");
+  const [imgUrl, setimgurl] = useState("");
+  const [skils, setskils] = useState([]);
+  const [phoneNo, setPhoneNo] = useState("");
 
-  let handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setloading(true);
-      let registerFunc = await createUserWithEmailAndPassword(
-        auth,
-        useremail,
-        userpass,
-      );
-      console.log("authen Data", registerFunc);
+
+      await createUserWithEmailAndPassword(auth, useremail, userpass);
 
       await fetch(
         "https://usermangement-19026-default-rtdb.firebaseio.com/useregister.json",
         {
-          method: "post",
+          method: "POST",
           headers: {
             "content-type": "application/json",
           },
           body: JSON.stringify({
-            user: user,
-            userpass: userpass,
-            useremail: useremail,
+            user,
+            useremail,
+            userpass,
+            userAge,
+            userText,
+            region,
+            useradio,
+            skils,
+            phoneNo,
             createdAt: new Date().toISOString(),
           }),
         },
-        useremail(""),
-        userpass(""),
-        user(""),
-        successToast("Register Successfull"),
       );
+      setemail("");
+      setpass("");
+      setuser("");
+      setAge("");
+      setText("");
+      setregion("");
+      setradio("");
+      setskils([]);
+
+      successToast("Register Successful");
     } catch (error) {
       errorToast(error.message);
     } finally {
       setloading(false);
     }
   };
-  let handlecheck = (e) => {
-    const checked  = e.target.value;
-    // console.log(e.target.value, "data");
-    skils.filter((item) => item !== e.target.value);
-    console.log('',
-      skils);
+
+  const handlecheck = (e) => {
+    const { value, checked } = e.target;
+
+    if (checked) {
+      setskils([...skils, value]);
+    } else {
+      setskils(skils.filter((item) => item !== value));
+    }
   };
-  console.log(
-    useremail,
-    userpass,
-    userAge,
-    userText,
-    region,
-    useradio,
-    skils,
-    imgUrl,
-  );
+
   return (
-    <>
-      {loading ? (
-        <div className="d-flex align-items-center justify-content-center vh-100 vw-100">
-          <Loader />
-        </div>
-      ) : (
-        <div className="form-group">
-          <form onSubmit={handleSubmit}>
-            <div className="form-item">
-              <label>Name </label>
-              <input
-                type="text"
-                value={user}
-                placeholder="enter the username"
-                onChange={(e) => setuser(e.target.value)}
-              />
-            </div>
-            <div className="form-item">
-              <label>Email </label>
-              <input
-                type="email"
-                value={useremail}
-                placeholder="enter the Email"
-                onChange={(e) => setemail(e.target.value)}
-              />
-            </div>
-            <div className="form-item">
-              <label>Password </label>
-              <input
-                type="password"
-                value={userpass}
-                placeholder="enter the password"
-                onChange={(e) => setpass(e.target.value)}
-              />
-            </div>
-            <div className="form-item">
-              <label>Age </label>
-              <input
-                type="number"
-                value={userAge}
-                placeholder="enter the Age"
-                onChange={(e) => setAge(e.target.value)}
-              />
-            </div>
-            <div className="form-item">
-              <label>Adreess </label>
-              <textarea
-                value={userText}
-                onChange={(e) => setText(e.target.value)}
-              ></textarea>
-            </div>
-
-            <div className="form-item">
-              <label>region </label>
-              <select
-                value={region}
-                onChange={(e) => setregion(e.target.value)}
-              >
-                <option>select Region</option>
-                <option> india </option>
-                <option>Others</option>
-              </select>
-            </div>
-            <div className="form-item">
-              <label>Skill </label>
-              <input
-                type="checkbox"
-                value="html"
-                checked={true}
-                onChange={handlecheck}
-              />
-              html
-              <input type="checkbox" value="css" onChange={handlecheck} />
-              css
-            </div>
-            <div className="form-item">
-              <label>gender </label>
-              <input
-                type="radio"
-                value="male"
-                onChange={(e) => setradio(e.target.value)}
-              />
-              Male
-              <input
-                type="radio"
-                value="useradio"
-                checked={true}
-                onChange={(e) => setradio(e.target.value)}
-              />
-              FeMale
-            </div>
-            <div className="form-item">
-              <label>image </label>
-              <input
-                type="file"
-                value={imgUrl}
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  if(file){
-                   const imgUrl= URL.createObjectURL(file)
-                   setimgurl(imgUrl)
+    <Container>
+      <Row>
+        {loading ? (
+          <div className="d-flex justify-content-center align-items-center vh-100">
+            <Loader />
+          </div>
+        ) : (
+          <>
+            {/* Left Side */}
+            <Col
+              lg={5}
+              className="d-flex justify-content-center align-items-center "
+            >
+              <div className="left-side">
+                <img
+                  src={
+                    "https://img.freepik.com/free-vector/businessman-businesswoman-looking-computer-monitor_1262-21450.jpg"
                   }
-                }
-                  
-                }
-              />
-            </div>
+                  style={{ maxWidth: "469px" }}
+                  alt="preview"
+                />
+              </div>
+            </Col>
 
-            <button className="btn-gradient">Register</button>
-            <h5 className="footer_text">
-              You have an account? <Link to="/login">Login</Link>
-            </h5>
-          </form>
-        </div>
-      )}
-    </>
+            {/* Right Side */}
+            <Col lg={7}>
+              <div className="right-side form-group1 w-100">
+                <form onSubmit={handleSubmit}>
+                  <h2 className="title"> Register</h2>
+
+                  <Row>
+                    <Col lg={6}>
+                      <div className="form-item">
+                        <input
+                          type="text"
+                          placeholder="Name"
+                          value={user}
+                          onChange={(e) => setuser(e.target.value)}
+                        />
+                      </div>
+                    </Col>
+
+                    <Col lg={6}>
+                      <div className="form-item">
+                        <input
+                          type="email"
+                          placeholder="Email"
+                          value={useremail}
+                          onChange={(e) => setemail(e.target.value)}
+                        />
+                      </div>
+                    </Col>
+
+                    <Col lg={6}>
+                      <div className="form-item">
+                        <input
+                          type="password"
+                          placeholder="Password"
+                          value={userpass}
+                          onChange={(e) => setpass(e.target.value)}
+                        />
+                      </div>
+                    </Col>
+
+                    <Col lg={6}>
+                      <div className="form-item">
+                        <input
+                          type="number"
+                          placeholder="Age"
+                          value={userAge}
+                          onChange={(e) => setAge(e.target.value)}
+                        />
+                      </div>
+                    </Col>
+                    <Col lg={6}>
+                      <div className="form-item">
+                        <input
+                          type="number"
+                          placeholder="Phone Number"
+                          value={phoneNo}
+                          onChange={(e) => setPhoneNo(e.target.value)}
+                        />
+                      </div>
+                    </Col>
+                    <Col lg={6}>
+                      <div className="form-item">
+                        <select
+                          value={region}
+                          onChange={(e) => setregion(e.target.value)}
+                        >
+                          <option value="">Select Region</option>
+                          <option value="india">India</option>
+                          <option value="others">Others</option>
+                        </select>
+                      </div>
+                    </Col>
+
+                    <Col lg={6}>
+                      <div className="form-item">
+                        <label>Skills:</label>
+                        <span>
+                          <input
+                            type="checkbox"
+                            value="html"
+                            checked={skils.includes("html")}
+                            onChange={handlecheck}
+                          />
+                          HTML
+                        </span>
+                        <span>
+                          <input
+                            type="checkbox"
+                            value="css"
+                            checked={skils.includes("css")}
+                            onChange={handlecheck}
+                          />
+                          CSS
+                        </span>
+                      </div>
+                    </Col>
+
+                    <Col lg={6}>
+                      <div className="form-item">
+                        <label>Gender:</label>
+                        <span>
+                          <input
+                            type="radio"
+                            value="male"
+                            checked={useradio === "male"}
+                            onChange={(e) => setradio(e.target.value)}
+                          />
+                          Male
+                        </span>
+                        <span>
+                          <input
+                            type="radio"
+                            value="female"
+                            checked={useradio === "female"}
+                            onChange={(e) => setradio(e.target.value)}
+                          />
+                          Female
+                        </span>
+                      </div>
+                    </Col>
+                    <Col lg={6}>
+                      <div className="form-item">
+                        <textarea
+                          placeholder="Address"
+                          value={userText}
+                          onChange={(e) => setText(e.target.value)}
+                        />
+                      </div>
+                    </Col>
+                    <Col lg={6}>
+                      <div className="form-item">
+                        <input
+                          type="file"
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              setimgurl(URL.createObjectURL(file));
+                            }
+                          }}
+                        />
+                      </div>
+                    </Col>
+
+                    <button type="submit" className="btn-gradient">
+                      Register
+                    </button>
+                  </Row>
+                </form>
+
+                <h5 className="footer_text">
+                  Already have account? <Link to="/login">Login</Link>
+                </h5>
+              </div>
+            </Col>
+          </>
+        )}
+      </Row>
+    </Container>
   );
 };
 

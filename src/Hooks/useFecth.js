@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-const useFecth = () => {
+const useFecth = (url ) => {
  
     const [ data,setdata ]=useState([])
     const [loading,setloading]=useState(false)
