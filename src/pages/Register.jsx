@@ -66,12 +66,23 @@ const Register = () => {
 
   const handlecheck = (e) => {
     const { value, checked } = e.target;
-
     if (checked) {
       setskils([...skils, value]);
     } else {
       setskils(skils.filter((item) => item !== value));
     }
+    console.log(
+      user,
+      useremail,
+      userpass,
+      userAge,
+      userText,
+      region,
+      useradio,
+      skils,
+      phoneNo,
+    );
+    
   };
 
   return (
