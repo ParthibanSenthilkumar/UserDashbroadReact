@@ -14,9 +14,9 @@ const Allroutes = () => {
         < Route path='/login' element={ <Login /> } />  
        <Route path="/dashboard" element={<Sidebar />}>
         <Route index element={<Dashboard />} />
-        <Route path="admin" element={<h2>Admin Page</h2>} />
-        <Route path="user" element={<h2>User Page</h2>} />
-        <Route path="logout" element={<h2>Logout Page</h2>} />
+          <Route path="admin" element={<h2>Admin Page</h2>} />
+          <Route path="user" element={<h2>User Page</h2>} />
+          <Route path="logout" element={<h2>Logout Page</h2>} />
       </Route>
       </Routes>
     </>

@@ -54,6 +54,7 @@ const Register = () => {
       setText("");
       setregion("");
       setradio("");
+      setPhoneNo("")
       setskils([]);
 
       successToast("Register Successful");

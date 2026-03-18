@@ -13,17 +13,17 @@ const Sidebar = () => {
               </div>
             </li>
             <li className="nav-links">
-              <Nav.Link as={Link} to="/admin">
+              <Nav.Link as={Link} to="admin">
                 <i className="fa-solid fa-user-gear"></i> Admin
               </Nav.Link>
             </li>
             <li className="nav-links">
-              <Nav.Link as={Link}  to="/user">
+              <Nav.Link as={Link}  to="user">
                 <i className="fa-solid fa-user-gear"></i> User
               </Nav.Link>
             </li>
             <li className="nav-links">
-              <Nav.Link as={Link} to="/logout">
+              <Nav.Link as={Link} to="logout">
                 <i className="fa-solid fa-user-gear"></i> Logout
               </Nav.Link>
             </li>
@@ -40,6 +40,6 @@ const Sidebar = () => {
     </div>
     </>
   )
-}
+}  
 
 export default Sidebar

@@ -1,7 +1,13 @@
 import React from "react";
-
+import useFecth from "../Hooks/useFecth";
 
 const Dashboard = () => {
+
+  const {data,loading,error} = useFecth(
+    "https://usermangement-19026-default-rtdb.firebaseio.com/useregister.json"
+  )
+  console.log(data,'user data');
+  
   return (
     <>
       <div className="cart-group">
@@ -30,7 +36,7 @@ const Dashboard = () => {
         </div>
 
         <div className="user-table">
-          <table className="table table-responsive">
+          <table className="table table-bordered table-responsive text-center">
             <thead>
               <tr>
                 <th>Name</th>
@@ -40,6 +46,30 @@ const Dashboard = () => {
                 <th>Region</th>
               </tr>
             </thead>
+            <tbody>
+              {
+              data.map((userData)=>(
+              <tr key={userData.id}>
+              <td>
+                {userData.user || "---" } 
+              </td>
+              <td>
+                {userData.useremail || "--" }
+              </td>
+              <td>
+                {userData.userAge || "--" }
+              </td>
+              <td>
+                {userData.phoneNo || "--" }
+              </td>
+              <td>
+                {userData.region || "--" }
+              </td>
+              </tr>
+                ))
+              }
+             
+            </tbody>
             </table>
         </div>
 
