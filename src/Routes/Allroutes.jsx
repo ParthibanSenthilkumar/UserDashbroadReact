@@ -19,7 +19,7 @@ const Allroutes = () => {
           <Route path="user" element={<h2>User Page</h2>} />
           <Route path="logout" element={<h2>Logout Page</h2>} />
       </Route>
-      <Route path='/usermodal' element={ <userModal /> } />
+      <Route path='/usermodal/:id' element={ <userModal /> } />
       </Routes>
     </>
   )

@@ -1,29 +1,96 @@
-import React from 'react'
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import { useState } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import { useParams } from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
+const UserModal = ({ show, handleClose, currentRow }) => {
+  let { id } = useParams();
+  console.log(id);
+  console.log(currentRow, "test");
 
-const userModal = () => {
   return (
-    <div
-        className="modal show"
-        style={{ display: 'block', position: 'initial' }}
-      >
-        <Modal.Dialog>
-          <Modal.Header closeButton>
-            <Modal.Title>Modal title</Modal.Title>
-          </Modal.Header>
-  
-          <Modal.Body>
-            <p>Modal body text goes here.</p>
-          </Modal.Body>
-  
-          <Modal.Footer>
-            <Button variant="secondary">Close</Button>
-            <Button variant="primary">Save changes</Button>
-          </Modal.Footer>
-        </Modal.Dialog>
-      </div>
-  )
-}
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title> {currentRow?.user} </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="from-group">
+          <Row>
+            <Col lg={6}>
+              <div className="form-item">
+                <input type="text" name="" placeholder="enter the userName" />
+              </div>
+            </Col>
+            <Col lg={6}>
+              <div className="form-item">
+                <input type="email" name="" placeholder="enter the email" />
+              </div>
+            </Col>
+            <Col lg={6}>
+              <div className="form-item">
+                <input
+                  type="password"
+                  name=""
+                  placeholder="enter the password"
+                />
+              </div>
+            </Col>
+            <Col lg={6}>
+              <div className="form-item">
+                <input
+                  type="number"
+                  name=""
+                  placeholder="enter the phonenumber"
+                />
+              </div>
+            </Col>
+            <Col lg={6}>
+              <div className="form-item">
+                <input type="number" name="" placeholder="enter the age" />
+              </div>
+            </Col>
+            <Col lg={6}>
+              <select name="">
+                <option value="select Region">select Region</option>
+                <option> india </option>
+                <option> others </option>
+              </select>
+            </Col>
+            <Col lg={6}>
+              <label htmlFor="gender">Gender</label>
+              <span>
+                {" "}
+                <input type="radio" value="male" checked={""} /> male{" "}
+              </span>
+              <span>
+                {" "}
+                <input type="radio" value="male" checked={""} /> female{" "}
+              </span>
+            </Col>
+            <Col lg={6}>
+              <label htmlFor="Skills">Skills</label>
+              <input type="checkbox" />
+            </Col>
+            <Col lg={6}>
+              <label htmlFor="Address">Address</label>
+              <textarea placeholder="Your Address"></textarea>
+            </Col>
+            <Col lg={6}>
+              <input type="file" />
+            </Col>
+          </Row>
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+        <Button variant="primary" onClick={handleClose}>
+          Save Changes
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
 
-export default userModal
+export default UserModal;
