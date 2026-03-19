@@ -1,8 +1,8 @@
 ﻿import React, { useState } from "react";
-import { auth } from "../Firebase";
+ import { auth } from "../Firebase";
 import { Link } from "react-router-dom";
 import Loader from "../Components/Loader";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { errorToast, successToast } from "../Components/Toaster";
 import { Container, Row, Col } from "react-bootstrap";
 
@@ -21,6 +21,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let imgpath = `http://localhost:5173/images/${imgUrl}`;
     try {
       setloading(true);
 
@@ -42,6 +43,7 @@ const Register = () => {
             region,
             useradio,
             skils,
+            imgUrl: imgpath,
             phoneNo,
             createdAt: new Date().toISOString(),
           }),
@@ -54,8 +56,9 @@ const Register = () => {
       setText("");
       setregion("");
       setradio("");
+      setimgurl("");
+      setPhoneNo("");
       setskils([]);
-
       successToast("Register Successful");
     } catch (error) {
       errorToast(error.message);
@@ -81,8 +84,8 @@ const Register = () => {
       useradio,
       skils,
       phoneNo,
+      imgpath,
     );
-    
   };
 
   return (
@@ -244,10 +247,8 @@ const Register = () => {
                         <input
                           type="file"
                           onChange={(e) => {
-                            const file = e.target.files[0];
-                            if (file) {
-                              setimgurl(URL.createObjectURL(file));
-                            }
+                            setimgurl(e.target.files[0]?.name);
+                           
                           }}
                         />
                       </div>
