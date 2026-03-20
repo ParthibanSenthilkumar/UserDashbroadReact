@@ -9,7 +9,7 @@ const Sidebar = () => {
         <ul>
             <li>
               <div className="user-logo">
-                <img src="https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-Picture.png" alt="logo" />
+                <img src="https://www.vecteezy.com/free-png/user" alt="logo" />
               </div>
             </li>
             <li className="nav-links">

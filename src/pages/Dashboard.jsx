@@ -1,38 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import useFecth from "../Hooks/useFecth";
-import { useState } from "react";
 import Loader from "../Components/Loader";
-import errorToast from "../Components/Toaster";
-import UserModal from "../Components/userModal";
+import { errorToast } from "../Components/Toaster";
+import UserModal from "../Components/UserModal";
 
 const Dashboard = () => {
   const [show, setShow] = useState(false);
+  const [currentRow,setCurrentRow]=useState(null)
   const handleClose = () => setShow(false);
-  const [currentRow, setcurrentRow] = useState(null);
-  const handleShow = (userData) => {
-    setcurrentRow(userData);
+  const handleShow = ( userData) =>{
+    setCurrentRow(userData)
     setShow(true);
-  };
+  }
 
-  const { data, loading, error } = useFecth(
-    "https://usermangement-19026-default-rtdb.firebaseio.com/useregister.json",
-  );
-  if (loading) {
-    return (
-      <div className="d-flex align-items-center h-100 w-100">
+  const {data,loading,error} = useFecth(
+    "https://usermangement-19026-default-rtdb.firebaseio.com/useregister.json"
+  )
+  // console.log(data,'user data');
+  if(loading){
+    return(
+      <div className="d-flex align-items-center justify-content-center h-100 w-100">
         <Loader />
       </div>
-    );
+    )
   }
-  if (error) {
-    return errorToast(error.message);
+  if(error){
+    return(
+      errorToast(error.message)
+    )
   }
-  //   let navigate = useNavigate();
-  // let modalHandler = () => {
-  //   navigate(`/usermodal/${userData.id}`);
-  //   handleShow(userData);
-  // };
-
   return (
     <>
       <div className="cart-group">
@@ -60,45 +56,52 @@ const Dashboard = () => {
         <input type="text" placeholder="Search" />
       </div>
 
-      <div className="user-table">
-        <table className="table table-bordered table-responsive text-center">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Age</th>
-              <th>Phone No</th>
-              <th>Region</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.length > 0 ? (
-              data.map((userData) => (
-                <tr key={userData.id} onClick={() => handleShow(userData)}>
-                  <td>{userData.user || "---"}</td>
-                  <td>{userData.useremail || "--"}</td>
-                  <td>{userData.userAge || "--"}</td>
-                  <td>{userData.phoneNo || "--"}</td>
-                  <td>{userData.region || "--"}</td>
-                </tr>
-              ))
-            ) : (
+        <div className="user-table">
+          <table className="table table-bordered table-responsive text-center">
+            <thead>
               <tr>
-                <td>
-                  <p>user Not found</p>
-                </td>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Age</th>
+                <th>Phone No</th>
+                <th>Region</th>
               </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-      <UserModal
-        show={show}
-        handleClose={handleClose}
-        currentRow={currentRow}
-      />
-    </>
+            </thead>
+            <tbody>
+              {
+              data.length>0?(              
+                data.map((userData)=>(
+              <tr key={userData.id} onClick={()=>handleShow(userData)}>
+              <td>
+                {userData.user || "---" } 
+              </td>
+              <td>
+                {userData.useremail || "--" }
+              </td>
+              <td>
+                {userData.userAge || "--" }
+              </td>
+              <td>
+                {userData.phoneNo || "--" }
+              </td>
+              <td>
+                {userData.region || "--" }
+              </td>
+              </tr>
+                ))):(
+                  <tr>
+                    <td> <p>User Not found</p> </td>
+                  </tr>
+                )
+              }
+              
+              <UserModal show={show} handleClose={handleClose}   userinfo={currentRow} />
+            </tbody>
+            </table>
+        </div>
+
+      </>
+       
   );
 };
 
