@@ -76,9 +76,6 @@ const Register = () => {
             imgpath,
             phoneNo,);
   };
-
-  
-
   const handlecheck = (e) => {
     const { value, checked } = e.target;
     if (checked) {
@@ -130,7 +127,6 @@ const Register = () => {
               <div className="right-side form-group1 w-100">
                 <form onSubmit={handleSubmit}>
                   <h2 className="title"> Register</h2>
-
                   <Row>
                     <Col lg={6}>
                       <div className="form-item">

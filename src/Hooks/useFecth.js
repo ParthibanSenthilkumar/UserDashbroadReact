@@ -21,7 +21,7 @@ const useFecth = ( url ) => {
                 )
             }
             
-                console.log(resData,'converted array    ');
+                // console.log(resData,'converted array    ');
                 
                 setdata(resarry)
             }
@@ -40,3 +40,5 @@ const useFecth = ( url ) => {
 }
 
 export default useFecth
+
+

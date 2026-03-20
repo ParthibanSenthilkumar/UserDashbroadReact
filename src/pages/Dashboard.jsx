@@ -1,13 +1,22 @@
 import React, { useState } from "react";
 import useFecth from "../Hooks/useFecth";
 import Loader from "../Components/Loader";
+import { errorToast } from "../Components/Toaster";
+import UserModal from "../Components/UserModal";
 
 const Dashboard = () => {
+  const [show, setShow] = useState(false);
+  const [currentRow,setCurrentRow]=useState(null)
+  const handleClose = () => setShow(false);
+  const handleShow = ( userData) =>{
+    setCurrentRow(userData)
+    setShow(true);
+  }
 
   const {data,loading,error} = useFecth(
     "https://usermangement-19026-default-rtdb.firebaseio.com/useregister.json"
   )
-  console.log(data,'user data');
+  // console.log(data,'user data');
   if(loading){
     return(
       <div className="d-flex align-items-center justify-content-center h-100 w-100">
@@ -16,7 +25,9 @@ const Dashboard = () => {
     )
   }
   if(error){
-    
+    return(
+      errorToast(error.message)
+    )
   }
   return (
     <>
@@ -58,8 +69,9 @@ const Dashboard = () => {
             </thead>
             <tbody>
               {
-              data.map((userData)=>(
-              <tr key={userData.id}>
+              data.length>0?(              
+                data.map((userData)=>(
+              <tr key={userData.id} onClick={()=>handleShow(userData)}>
               <td>
                 {userData.user || "---" } 
               </td>
@@ -76,9 +88,14 @@ const Dashboard = () => {
                 {userData.region || "--" }
               </td>
               </tr>
-                ))
+                ))):(
+                  <tr>
+                    <td> <p>User Not found</p> </td>
+                  </tr>
+                )
               }
-             
+              
+              <UserModal show={show} handleClose={handleClose}   userinfo={currentRow} />
             </tbody>
             </table>
         </div>

@@ -4,7 +4,7 @@ import Login from '../pages/Login'
 import Register from '../pages/Register'
 import Dashboard from '../pages/Dashboard'
 import Sidebar from '../Components/Sidebar'
-import userModal from '../Components/userModal'
+import userModal from '../Components/UserModal'
 
 const Allroutes = () => {
   return (
