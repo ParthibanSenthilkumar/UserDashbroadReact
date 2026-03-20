@@ -1,44 +1,38 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 
-const useFecth = ( url ) => {
- 
-    const [ data,setdata ]=useState([])
-    const [loading,setloading]=useState(false)
-    const [error,seterror]=useState(null)
+const useFecth = (url) => {
+  const [data, setdata] = useState([]);
+  const [loading, setloading] = useState(false);
+  const [error, seterror] = useState(null);
 
-    useEffect(()=>{
-        let fetchData = async ()=>{
-            try{
-                setloading(true)
-                let res = await fetch(url)
-                let resData=await res.json()
-                let resarry=[]
-                for ( let key in resData ){
-                    resarry.push({
-                        id:key,
-                        ...resData[key]
-                    }
-                )
-            }
-            
-                console.log(resData,'converted array    ');
-                
-                setdata(resarry)
-            }
-            catch(error){
-                seterror(error.message)
-            }
-            finally{
-                setloading(false)
-            }
+  useEffect(() => {
+    let fetchData = async () => {
+      try {
+        setloading(true);
+        let res = await fetch(url);
+        let resData = await res.json();
+        let resarry = [];
+        for (let key in resData) {
+          resarry.push({
+            id: key,
+            ...resData[key],
+          });
         }
-        fetchData()
-        },[url])
-        console.log(data);
-        
 
+        // console.log(resData,'converted array    ');
 
-  return {data,loading,error}
-}
+        setdata(resarry);
+      } catch (error) {
+        seterror(error.message);
+      } finally {
+        setloading(false);
+      }
+    };
+    fetchData();
+  }, [url]);
+  console.log(data);
 
-export default useFecth
+  return { data, loading, error };
+};
+
+export default useFecth;

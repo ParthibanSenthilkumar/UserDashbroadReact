@@ -14,72 +14,98 @@ const UserModal = ({ show, handleClose, currentRow }) => {
         <Modal.Title> {currentRow?.user} </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div className="from-group">
-          <Row>
-            <Col lg={6}>
-              <div className="form-item">
-                <input type="text" name="" placeholder="enter the userName" />
-              </div>
-            </Col>
-            <Col lg={6}>
-              <div className="form-item">
-                <input type="email" name="" placeholder="enter the email" />
-              </div>
-            </Col>
-            <Col lg={6}>
-              <div className="form-item">
-                <input
-                  type="password"
-                  name=""
-                  placeholder="enter the password"
-                />
-              </div>
-            </Col>
-            <Col lg={6}>
-              <div className="form-item">
-                <input
-                  type="number"
-                  name=""
-                  placeholder="enter the phonenumber"
-                />
-              </div>
-            </Col>
-            <Col lg={6}>
-              <div className="form-item">
-                <input type="number" name="" placeholder="enter the age" />
-              </div>
-            </Col>
-            <Col lg={6}>
-              <select name="">
-                <option value="select Region">select Region</option>
-                <option> india </option>
-                <option> others </option>
+        <Row>
+          <Col lg={6}>
+            <div className="form-item">
+              <input type="text" placeholder="Name" value={currentRow?.user} />
+            </div>
+          </Col>
+
+          <Col lg={6}>
+            <div className="form-item">
+              <input
+                type="email"
+                placeholder="Email"
+                value={currentRow?.useremail}
+              />
+            </div>
+          </Col>
+
+          <Col lg={6}>
+            <div className="form-item">
+              <input
+                type="password"
+                placeholder="Password"
+                value={currentRow?.userpass}
+              />
+            </div>
+          </Col>
+
+          <Col lg={6}>
+            <div className="form-item">
+              <input
+                type="number"
+                placeholder="Age"
+                value={currentRow?.userAge}
+              />
+            </div>
+          </Col>
+          <Col lg={6}>
+            <div className="form-item">
+              <input
+                type="number"
+                placeholder="Phone Number"
+                value={currentRow?.phoneNo}
+              />
+            </div>
+          </Col>
+          <Col lg={6}>
+            <div className="form-item">
+              <select value={currentRow?.region}>
+                <option value="">Select Region</option>
+                <option value="india">India</option>
+                <option value="others">Others</option>
               </select>
-            </Col>
-            <Col lg={6}>
-              <label htmlFor="gender">Gender</label>
+            </div>
+          </Col>
+
+          <Col lg={6}>
+            <div className="form-item">
+              <label>Skills:</label>
               <span>
-                {" "}
-                <input type="radio" value="male" checked={""} /> male{" "}
+                <input type="checkbox" value={currentRow?.[""]} Html />
               </span>
               <span>
-                {" "}
-                <input type="radio" value="male" checked={""} /> female{" "}
+                <input type="checkbox" value={currentRow?.[""]} />
+                CSS
               </span>
-            </Col>
-            <Col lg={6}>
-              <label htmlFor="Skills">Skills</label>
-              <input type="checkbox" />
-            </Col>
-            <Col lg={6}>
-              <label htmlFor="Address">Address</label>
-              <textarea placeholder="Your Address"></textarea>
-            </Col>
-            <Col lg={6}>
+            </div>
+          </Col>
+
+          <Col lg={6}>
+            <div className="form-item">
+              <label>Gender:</label>
+              <span>
+                <input type="radio" value={currentRow?.gender} />
+                Male
+              </span>
+              <span>
+                <input type="radio" value={currentRow?.gender} />
+                Female
+              </span>
+            </div>
+          </Col>
+          <Col lg={6}>
+            <div className="form-item">
+              <textarea placeholder="Address" value={currentRow?.userText} />
+            </div>
+          </Col>
+          <Col lg={6}>
+            <div className="form-item">
               <input type="file" />
-            </Col>
-          </Row>
-        </div>
+            </div>
+          </Col>
+        </Row>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
