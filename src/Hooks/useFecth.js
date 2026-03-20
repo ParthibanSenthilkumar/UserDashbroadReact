@@ -20,7 +20,10 @@ const useFecth = ( url ) => {
                     }
                 )
             }
-            setdata(resarry)
+            
+                console.log(resData,'converted array    ');
+                
+                setdata(resarry)
             }
             catch(error){
                 seterror(error.message)

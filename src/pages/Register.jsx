@@ -1,8 +1,8 @@
 ﻿import React, { useState } from "react";
-// import { auth } from "../Firebase";
+import { auth } from "../Firebase";
 import { Link } from "react-router-dom";
 import Loader from "../Components/Loader";
-// import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { errorToast, successToast } from "../Components/Toaster";
 import { Container, Row, Col } from "react-bootstrap";
 
@@ -20,12 +20,14 @@ const Register = () => {
   const [phoneNo, setPhoneNo] = useState("");
 
   const handleSubmit = async (e) => {
-    let imgpath=`http://localhost:5173/images/${imgUrl}`
     e.preventDefault();
+
+    let imgpath = `http://localhost:5173/images/${imgUrl}`;
+
     try {
       setloading(true);
 
-      // await createUserWithEmailAndPassword(auth, useremail, userpass);
+    await createUserWithEmailAndPassword(auth, useremail, userpass);
 
       await fetch(
         "https://usermangement-19026-default-rtdb.firebaseio.com/useregister.json",
@@ -43,7 +45,6 @@ const Register = () => {
             region,
             useradio,
             skils,
-            imgUrl:imgpath,
             phoneNo,
             createdAt: new Date().toISOString(),
           }),
@@ -56,10 +57,8 @@ const Register = () => {
       setText("");
       setregion("");
       setradio("");
-      setimgurl('');
       setPhoneNo("")
       setskils([]);
-
       successToast("Register Successful");
     } catch (error) {
       errorToast(error.message);
@@ -82,12 +81,23 @@ const Register = () => {
 
   const handlecheck = (e) => {
     const { value, checked } = e.target;
-
     if (checked) {
       setskils([...skils, value]);
     } else {
       setskils(skils.filter((item) => item !== value));
     }
+    console.log(
+      user,
+      useremail,
+      userpass,
+      userAge,
+      userText,
+      region,
+      useradio,
+      skils,
+      phoneNo,
+      imgpath,
+    );
   };
 
   return (
@@ -248,7 +258,12 @@ const Register = () => {
                       <div className="form-item">
                         <input
                           type="file"
-                          onChange={(e) =>setimgurl(e.target.files[0]?.name) }
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              setimgurl(URL.createObjectURL(file));
+                            }
+                          }}
                         />
                       </div>
                     </Col>
