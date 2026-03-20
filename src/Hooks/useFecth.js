@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 const useFecth = ( url ) => {
  
-    const [ data,setdata ]=useState([])
+    const [data,setdata ]=useState([])
     const [loading,setloading]=useState(false)
     const [error,seterror]=useState(null)
 
@@ -20,10 +20,7 @@ const useFecth = ( url ) => {
                     }
                 )
             }
-            console.log("Value:", resData[key]);
-                console.log(resData,'converted array    ');
-                
-                setdata(resarry)
+            setdata(resarry)
             }
             catch(error){
                 seterror(error.message)
@@ -34,8 +31,6 @@ const useFecth = ( url ) => {
         }
         fetchData()
         },[url])
-        console.log(data);
-        
 
 
   return {data,loading,error}

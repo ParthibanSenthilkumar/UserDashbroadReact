@@ -68,7 +68,7 @@ textarea {
   background: var(--surface);
 }
 
-/* Basic form layout for login/register pages */
+
 .from-group {
   position: relative;
   max-width: 420px;
