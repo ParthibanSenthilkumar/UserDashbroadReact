@@ -5,6 +5,7 @@ import Loader from "../Components/Loader";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { errorToast, successToast } from "../Components/Toaster";
 import { Container, Row, Col } from "react-bootstrap";
+import { getPost } from "../Services/Api";
 
 const Register = () => {
   const [useremail, setemail] = useState("");
@@ -23,33 +24,23 @@ const Register = () => {
     e.preventDefault();
 
     let imgpath = `http://localhost:5173/images/${imgUrl}`;
-
+    const formData = {
+      user,
+      useremail,
+      userpass,
+      userAge,
+      userText,
+      region,
+      useradio,
+      skils,
+      phoneNo,
+      imgUrl: imgpath,
+      createdAt: new Date().toISOString(),
+    };
     try {
       setloading(true);
-
-    await createUserWithEmailAndPassword(auth, useremail, userpass);
-
-      await fetch(
-        "https://usermangement-19026-default-rtdb.firebaseio.com/useregister.json",
-        {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({
-            user,
-            useremail,
-            userpass,
-            userAge,
-            userText,
-            region,
-            useradio,
-            skils,
-            phoneNo,
-            createdAt: new Date().toISOString(),
-          }),
-        },
-      );
+      await createUserWithEmailAndPassword(auth, useremail, userpass);
+      await getPost(formData);
       setemail("");
       setpass("");
       setuser("");
@@ -57,7 +48,7 @@ const Register = () => {
       setText("");
       setregion("");
       setradio("");
-      setPhoneNo("")
+      setPhoneNo("");
       setskils([]);
       successToast("Register Successful");
     } catch (error) {
@@ -65,16 +56,18 @@ const Register = () => {
     } finally {
       setloading(false);
     }
-      console.log(user,
-            useremail,
-            userpass,
-            userAge,
-            userText,
-            region,
-            useradio,
-            skils,
-            imgpath,
-            phoneNo,);
+    console.log(
+      user,
+      useremail,
+      userpass,
+      userAge,
+      userText,
+      region,
+      useradio,
+      skils,
+      imgpath,
+      phoneNo,
+    );
   };
   const handlecheck = (e) => {
     const { value, checked } = e.target;
