@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { errorToast, successToast } from "../Components/Toaster";
 import Loader from "../Components/Loader";
 import { Container,Col,Row } from "react-bootstrap";
+import { getLogPost } from "../Services/Api";
 
 const Login = () => {
   let [useLog, setlog] = useState("");
@@ -16,37 +17,29 @@ let navigate = useNavigate();
 
   let handleSubmit = async (e) => {
     e.preventDefault();
+    let formdata={
+      useLog,
+      userpass,
+    }
     try {
         setloading(true);
         let LoginFunc = await signInWithEmailAndPassword(auth, useLog, userpass);
         console.log("authen Data", LoginFunc);  
-        await fetch(
-      "https://usermangement-19026-default-rtdb.firebaseio.com/UserLogin.json",
-      {
-        method: "post",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          useLog: useLog,
-          userpass: userpass,
-          createAt: new Date().toISOString(),
-        }),
-      },
-    );
-    setlog('')
-    setpass('')
-    successToast("Login Successfull"),
-    navigate("/dashboard")
-    }
+        await getLogPost(formdata)
+        setlog('')
+        setpass('')
+        successToast("Login Successfull"),
+        navigate("/dashboard")
+      }
     catch (error) {
-       errorToast(error.message)
+    errorToast(error.message)
+    // console.log(error.message);
     }
     finally{
-        setloading(false);
+    setloading(false);
     }
-    
-  };
+    }
+
 
   return (
     <>

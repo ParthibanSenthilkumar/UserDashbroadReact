@@ -3,12 +3,39 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { Row, Col } from "react-bootstrap";
+import { getPatch } from "../Services/Api";
 
 const UserModal = ({ show, handleClose, currentRow }) => {
   console.log(currentRow, "test");
 
-  let [isEdit, setEdit] = useState("");
+  let [isEdit, setEdit] = useState({});
 
+  let handleEdit = async () => {
+    const formdata = {
+      user,
+      useremail,
+      userpass,
+      phoneNo,
+      userAge,
+      region,
+      gender,
+      skils,
+      userText,
+    };
+    await getPatch(formdata);
+  };
+
+  const handlecheck = (e) => {
+    const { value, checked } = e.target;
+      let updatedata= isEdit?.skils;
+      if(checked){
+        updatedata=[...updatedata,value]
+      }
+      else{
+        updatedata= updatedata.filter(item => item  !== value)
+      }
+      setEdit({...isEdit,skils:updatedata})
+    }
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -20,9 +47,10 @@ const UserModal = ({ show, handleClose, currentRow }) => {
             <div className="form-item">
               <input
                 type="text"
-                name=""
+                name="user"
                 value={currentRow?.user}
                 placeholder="enter the userName"
+                onChange={(e) => setEdit({ ...isEdit, user: e.target.value })}
               />
             </div>
           </Col>
@@ -33,6 +61,9 @@ const UserModal = ({ show, handleClose, currentRow }) => {
                 name=""
                 value={currentRow?.useremail}
                 placeholder="enter the email"
+                onChange={(e) =>
+                  setEdit({ ...isEdit, useremail: e.target.value })
+                }
               />
             </div>
           </Col>
@@ -43,6 +74,9 @@ const UserModal = ({ show, handleClose, currentRow }) => {
                 name=""
                 value={currentRow?.userpass}
                 placeholder="enter the password"
+                onChange={(e) =>
+                  setEdit({ ...isEdit, userpass: e.target.value })
+                }
               />
             </div>
           </Col>
@@ -53,6 +87,9 @@ const UserModal = ({ show, handleClose, currentRow }) => {
                 name=""
                 value={currentRow?.phoneNo}
                 placeholder="enter the phonenumber"
+                onChange={(e) =>
+                  setEdit({ ...isEdit, phoneNo: e.target.value })
+                }
               />
             </div>
           </Col>
@@ -63,12 +100,19 @@ const UserModal = ({ show, handleClose, currentRow }) => {
                 name=""
                 value={currentRow?.userAge}
                 placeholder="enter the age"
+                onChange={(e) =>
+                  setEdit({ ...isEdit, userAge: e.target.value })
+                }
               />
             </div>
           </Col>
           <Col lg={6}>
             <div className="form-item">
-              <select name="" value={currentRow?.region}>
+              <select
+                name=""
+                value={currentRow?.region}
+                onChange={(e) => setEdit({ ...isEdit, region: e.target.value })}
+              >
                 <option value="select Region">select Region</option>
                 <option> india </option>
                 <option> others </option>
@@ -79,12 +123,28 @@ const UserModal = ({ show, handleClose, currentRow }) => {
             <div className="form-item">
               <label htmlFor="gender">Gender</label>
               <span>
-                {" "}
-                <input type="radio" value="male" checked={""} /> male{" "}
+                
+                <input
+                  type="radio"
+                  value="male"
+                  checked={isEdit?.gender === "male"}
+                  onChange={(e) =>
+                    setEdit({ ...isEdit, gender: e.target.value })
+                  }
+                />
+                male
               </span>
               <span>
-                {" "}
-                <input type="radio" value="male" checked={""} /> female{" "}
+                
+                <input
+                  type="radio"
+                  value="female"
+                  checked={isEdit?.gender === "female"}
+                  onChange={(e) =>
+                    setEdit({ ...isEdit, gender: e.target.value })
+                  }
+                />
+                female
               </span>
             </div>
           </Col>
@@ -92,14 +152,22 @@ const UserModal = ({ show, handleClose, currentRow }) => {
             <div className="form-item">
               <label htmlFor="Skills">Skills</label>
               <span>
-                {" "}
-                <input type="checkbox" value={currentRow?.skils} />
-                html{" "}
+                
+                <input
+                  type="checkbox"
+                  value={isEdit?.skils?.includes("html")}
+                  onChange={handlecheck}
+                />
+                html
               </span>
               <span>
-                {" "}
-                <input type="checkbox" value={currentRow?.skils} />
-                css{" "}
+                
+                <input
+                  type="checkbox"
+                  value={isEdit?.skils?.includes("css")}
+                  onChange={handlecheck}
+                />
+                css
               </span>
             </div>
           </Col>
@@ -109,18 +177,24 @@ const UserModal = ({ show, handleClose, currentRow }) => {
               <textarea
                 placeholder="Your Address"
                 value={currentRow?.userText}
+                onChange={(e) =>
+                  setEdit({ ...isEdit, userText: e.target.value })
+                }
               ></textarea>
             </div>
           </Col>
           <Col lg={6}>
-            <input type="file" />
+            <label htmlFor="image mb-3">image</label>
+            <div className="form-item">
+              <input type="file" />
+            </div>
           </Col>
         </Row>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
+      <Button variant="secondary" onClick={()=>handleEdit(currentRow.id)}>
+        Edit
+      </Button> 
         <Button variant="primary" onClick={handleClose}>
           Save Changes
         </Button>

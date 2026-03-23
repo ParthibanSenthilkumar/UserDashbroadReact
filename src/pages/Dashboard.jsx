@@ -6,37 +6,19 @@ import UserModal from "../Components/userModal";
 import { getData } from "../Services/Api";
 
 const Dashboard = () => {
+  let {userdata,loading,error}=useFecth(getData)
+  
   const [show, setShow] = useState(false);
-  const [data, setdata] = useState([]);
-  const [loading, setloading] = useState(false);
-  const [error, seterror] = useState(null);
   const [currentRow, setCurrentRow] = useState(null);
   const handleClose = () => setShow(false);
   const handleShow = (userData) => {
     setCurrentRow(userData);
     setShow(true);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
-  let fetchData = async () => {
-    try {
-      setloading(true);
-      const data = await getData();
-      setdata(data);
-    } catch (error) {
-      seterror(error.message);
-    } finally {
-      setloading(false);
-    }
-  };
-  fetchData();
-
+  }
   // console.log(data,'user data');
   if (loading) {
     return (
-      <div className="d-flex align-items-center justify-content-center h-100 w-100">
+      <div className="d-flex align-items-center justify-content-center vh-100 vw-100">
         <Loader />
       </div>
     );
@@ -83,8 +65,8 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {data.length > 0 ? (
-              data.map((userData) => (
+            {userdata.length > 0 ? (
+              userdata.map((userData) => (
                 <tr key={userData.id} onClick={() => handleShow(userData)}>
                   <td>{userData.user || "---"}</td>
                   <td>{userData.useremail || "--"}</td>

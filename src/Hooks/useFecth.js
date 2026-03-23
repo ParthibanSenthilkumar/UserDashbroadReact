@@ -1,37 +1,28 @@
 import React, { useEffect, useState } from "react";
+import { errorToast } from "../Components/Toaster";
 
-const useFecth = (url) => {
-  const [data, setdata] = useState([]);
+const useFecth = (apiFunc) => {
+  const [userdata, setuserdata] = useState([]);
   const [loading, setloading] = useState(false);
   const [error, seterror] = useState(null);
 
   useEffect(() => {
-    let fetchData = async () => {
-      try {
-        setloading(true);
-        let res = await fetch(url);
-        let resData = await res.json();
-        let resarry = [];
-        for (let key in resData) {
-          resarry.push({
-            id: key,
-            ...resData[key],
-          });
-        }
-
-        console.log(resData, "converted array    ");
-
-        setdata(resarry);
-      } catch (error) {
-        seterror(error.message);
-      } finally {
-        setloading(false);
-      }
-    };
-    fetchData();
-  }, [url]);
-  console.log(data);
-  return { data, loading, error };
+    fetchdata();
+  }, [apiFunc]);
+   let fetchdata = async () =>{
+    try{
+      setloading(true)
+      let res = await apiFunc();
+      setuserdata(res)
+    }
+    catch(error){
+      errorToast(error.message)
+    }
+    finally{
+      setloading(false)
+    }
+   }
+  return { userdata, loading, error };
 };
 
 export default useFecth;
