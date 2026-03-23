@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -9,33 +9,33 @@ const UserModal = ({ show, handleClose, currentRow }) => {
   console.log(currentRow, "test");
 
   let [isEdit, setEdit] = useState({});
+  let [disabled, setdisabled] = useState(true);
+
+  useEffect(() => {
+    if (currentRow) {
+      setEdit(currentRow);
+    }
+  }, [currentRow]);
 
   let handleEdit = async () => {
-    const formdata = {
-      user,
-      useremail,
-      userpass,
-      phoneNo,
-      userAge,
-      region,
-      gender,
-      skils,
-      userText,
-    };
-    await getPatch(formdata);
+    setdisabled(false);
+    const formdata = { ...isEdit };
+    await getPatch(formdata, currentRow?.id);
+    console.log(formdata, Editdata);
   };
 
   const handlecheck = (e) => {
     const { value, checked } = e.target;
-      let updatedata= isEdit?.skils;
-      if(checked){
-        updatedata=[...updatedata,value]
-      }
-      else{
-        updatedata= updatedata.filter(item => item  !== value)
-      }
-      setEdit({...isEdit,skils:updatedata})
+    let updatedata = isEdit?.skils;
+    if (checked) {
+      updatedata = [...updatedata, value];
+    } else {
+      updatedata = updatedata.filter((item) => item !== value);
     }
+    setEdit({ ...isEdit, skils: updatedata });
+  };
+
+  console.log(currentRow?.id, "id");
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -48,6 +48,7 @@ const UserModal = ({ show, handleClose, currentRow }) => {
               <input
                 type="text"
                 name="user"
+                disabled={disabled}
                 value={currentRow?.user}
                 placeholder="enter the userName"
                 onChange={(e) => setEdit({ ...isEdit, user: e.target.value })}
@@ -59,6 +60,7 @@ const UserModal = ({ show, handleClose, currentRow }) => {
               <input
                 type="email"
                 name=""
+                disabled={disabled}
                 value={currentRow?.useremail}
                 placeholder="enter the email"
                 onChange={(e) =>
@@ -72,6 +74,7 @@ const UserModal = ({ show, handleClose, currentRow }) => {
               <input
                 type="password"
                 name=""
+                disabled={disabled}
                 value={currentRow?.userpass}
                 placeholder="enter the password"
                 onChange={(e) =>
@@ -85,6 +88,7 @@ const UserModal = ({ show, handleClose, currentRow }) => {
               <input
                 type="number"
                 name=""
+                disabled={disabled}
                 value={currentRow?.phoneNo}
                 placeholder="enter the phonenumber"
                 onChange={(e) =>
@@ -98,6 +102,7 @@ const UserModal = ({ show, handleClose, currentRow }) => {
               <input
                 type="number"
                 name=""
+                disabled={disabled}
                 value={currentRow?.userAge}
                 placeholder="enter the age"
                 onChange={(e) =>
@@ -110,6 +115,7 @@ const UserModal = ({ show, handleClose, currentRow }) => {
             <div className="form-item">
               <select
                 name=""
+                disabled={disabled}
                 value={currentRow?.region}
                 onChange={(e) => setEdit({ ...isEdit, region: e.target.value })}
               >
@@ -123,10 +129,10 @@ const UserModal = ({ show, handleClose, currentRow }) => {
             <div className="form-item">
               <label htmlFor="gender">Gender</label>
               <span>
-                
                 <input
                   type="radio"
                   value="male"
+                  disabled={disabled}
                   checked={isEdit?.gender === "male"}
                   onChange={(e) =>
                     setEdit({ ...isEdit, gender: e.target.value })
@@ -135,10 +141,10 @@ const UserModal = ({ show, handleClose, currentRow }) => {
                 male
               </span>
               <span>
-                
                 <input
                   type="radio"
                   value="female"
+                  disabled={disabled}
                   checked={isEdit?.gender === "female"}
                   onChange={(e) =>
                     setEdit({ ...isEdit, gender: e.target.value })
@@ -152,18 +158,18 @@ const UserModal = ({ show, handleClose, currentRow }) => {
             <div className="form-item">
               <label htmlFor="Skills">Skills</label>
               <span>
-                
                 <input
                   type="checkbox"
+                  disabled={disabled}
                   value={isEdit?.skils?.includes("html")}
                   onChange={handlecheck}
                 />
                 html
               </span>
               <span>
-                
                 <input
                   type="checkbox"
+                  disabled={disabled}
                   value={isEdit?.skils?.includes("css")}
                   onChange={handlecheck}
                 />
@@ -176,6 +182,7 @@ const UserModal = ({ show, handleClose, currentRow }) => {
               <label htmlFor="Address">Address</label>
               <textarea
                 placeholder="Your Address"
+                disabled={disabled}
                 value={currentRow?.userText}
                 onChange={(e) =>
                   setEdit({ ...isEdit, userText: e.target.value })
@@ -186,15 +193,16 @@ const UserModal = ({ show, handleClose, currentRow }) => {
           <Col lg={6}>
             <label htmlFor="image mb-3">image</label>
             <div className="form-item">
-              <input type="file" />
+              <input type="file" disabled={disabled} />
             </div>
           </Col>
         </Row>
       </Modal.Body>
       <Modal.Footer>
-      <Button variant="secondary" onClick={()=>handleEdit(currentRow.id)}>
-        Edit
-      </Button> 
+        <Button variant="secondary" onClick={() => handleEdit(currentRow.id)}>
+          {isEdit ? "Edit" : "save"}
+        </Button>
+
         <Button variant="primary" onClick={handleClose}>
           Save Changes
         </Button>

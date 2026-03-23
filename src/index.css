@@ -68,7 +68,6 @@ textarea {
   background: var(--surface);
 }
 
-
 .from-group {
   position: relative;
   max-width: 420px;
@@ -269,6 +268,9 @@ textarea {
 .dash-cart span {
   font-size: 20px;
   font-weight: bold;
+}
+
+.Modal input {
 }
 
 @media (max-width: 480px) {
