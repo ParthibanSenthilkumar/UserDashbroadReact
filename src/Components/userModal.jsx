@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";git commit -am "updated modal"
+import Modal from "react-bootstrap/Modal";
 import { Row, Col } from "react-bootstrap";
 import { getPatch } from "../Services/Api";
 
