@@ -4,24 +4,35 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { Row, Col } from "react-bootstrap";
 import { getPatch } from "../Services/Api";
+import { successToast } from "./Toaster";
 
-const UserModal = ({ show, handleClose, currentRow }) => {
-  console.log(currentRow, "test");
+
+const Modaluser = ({ show, handleClose, currentRow }) => {
+    console.log(currentRow, "test");
 
   let [isEdit, setEdit] = useState({});
   let [disabled, setdisabled] = useState(true);
 
   useEffect(() => {
-    if (currentRow) {
+    if (currentRow) {        
       setEdit(currentRow);
     }
   }, [currentRow]);
 
+  console.log(isEdit,'isedit');
+
   let handleEdit = async () => {
-    setdisabled(false);
-    const formdata = { ...isEdit };
-    await getPatch(formdata, currentRow?.id);
-    console.log(formdata, Editdata);
+    if(disabled){
+      setdisabled(false);
+    }
+    else{
+      const formdata = { ...isEdit };
+      await getPatch(formdata, currentRow?.id);
+      console.log(formdata, 'Editdata');
+      successToast('Data Update Successfully')
+      setdisabled(true);
+      handleClose()
+    }
   };
 
   const handlecheck = (e) => {
@@ -34,12 +45,13 @@ const UserModal = ({ show, handleClose, currentRow }) => {
     }
     setEdit({ ...isEdit, skils: updatedata });
   };
+  // skils: updatedata -> to change name in  update data
 
   console.log(currentRow?.id, "id");
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title> {currentRow?.user} </Modal.Title>
+        <Modal.Title> {isEdit?.user} </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Row>
@@ -49,7 +61,7 @@ const UserModal = ({ show, handleClose, currentRow }) => {
                 type="text"
                 name="user"
                 disabled={disabled}
-                value={currentRow?.user}
+                value={isEdit?.user}
                 placeholder="enter the userName"
                 onChange={(e) => setEdit({ ...isEdit, user: e.target.value })}
               />
@@ -61,7 +73,7 @@ const UserModal = ({ show, handleClose, currentRow }) => {
                 type="email"
                 name=""
                 disabled={disabled}
-                value={currentRow?.useremail}
+                value={isEdit?.useremail}
                 placeholder="enter the email"
                 onChange={(e) =>
                   setEdit({ ...isEdit, useremail: e.target.value })
@@ -75,7 +87,7 @@ const UserModal = ({ show, handleClose, currentRow }) => {
                 type="password"
                 name=""
                 disabled={disabled}
-                value={currentRow?.userpass}
+                value={isEdit?.userpass}
                 placeholder="enter the password"
                 onChange={(e) =>
                   setEdit({ ...isEdit, userpass: e.target.value })
@@ -89,7 +101,7 @@ const UserModal = ({ show, handleClose, currentRow }) => {
                 type="number"
                 name=""
                 disabled={disabled}
-                value={currentRow?.phoneNo}
+                value={isEdit?.phoneNo}
                 placeholder="enter the phonenumber"
                 onChange={(e) =>
                   setEdit({ ...isEdit, phoneNo: e.target.value })
@@ -103,7 +115,7 @@ const UserModal = ({ show, handleClose, currentRow }) => {
                 type="number"
                 name=""
                 disabled={disabled}
-                value={currentRow?.userAge}
+                value={isEdit?.userAge}
                 placeholder="enter the age"
                 onChange={(e) =>
                   setEdit({ ...isEdit, userAge: e.target.value })
@@ -116,7 +128,7 @@ const UserModal = ({ show, handleClose, currentRow }) => {
               <select
                 name=""
                 disabled={disabled}
-                value={currentRow?.region}
+                value={isEdit?.region}
                 onChange={(e) => setEdit({ ...isEdit, region: e.target.value })}
               >
                 <option value="select Region">select Region</option>
@@ -133,9 +145,9 @@ const UserModal = ({ show, handleClose, currentRow }) => {
                   type="radio"
                   value="male"
                   disabled={disabled}
-                  checked={isEdit?.gender === "male"}
+                  checked={isEdit?.useradio === "male"}
                   onChange={(e) =>
-                    setEdit({ ...isEdit, gender: e.target.value })
+                    setEdit({ ...isEdit, useradio: e.target.value })
                   }
                 />
                 male
@@ -145,7 +157,7 @@ const UserModal = ({ show, handleClose, currentRow }) => {
                   type="radio"
                   value="female"
                   disabled={disabled}
-                  checked={isEdit?.gender === "female"}
+                  checked={isEdit?.useradio === "female"}
                   onChange={(e) =>
                     setEdit({ ...isEdit, gender: e.target.value })
                   }
@@ -161,7 +173,8 @@ const UserModal = ({ show, handleClose, currentRow }) => {
                 <input
                   type="checkbox"
                   disabled={disabled}
-                  value={isEdit?.skils?.includes("html")}
+                  value='html'
+                  checked={isEdit?.skils?.includes("html")}
                   onChange={handlecheck}
                 />
                 html
@@ -170,7 +183,8 @@ const UserModal = ({ show, handleClose, currentRow }) => {
                 <input
                   type="checkbox"
                   disabled={disabled}
-                  value={isEdit?.skils?.includes("css")}
+                  value='css'
+                  checked={isEdit?.skils?.includes("css")}
                   onChange={handlecheck}
                 />
                 css
@@ -183,7 +197,7 @@ const UserModal = ({ show, handleClose, currentRow }) => {
               <textarea
                 placeholder="Your Address"
                 disabled={disabled}
-                value={currentRow?.userText}
+                value={isEdit?.userText}
                 onChange={(e) =>
                   setEdit({ ...isEdit, userText: e.target.value })
                 }
@@ -200,15 +214,17 @@ const UserModal = ({ show, handleClose, currentRow }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={() => handleEdit(currentRow.id)}>
-          {isEdit ? "Edit" : "save"}
+          {disabled ? "Edit" : "save"}
         </Button>
 
         <Button variant="primary" onClick={handleClose}>
-          Save Changes
+          Cancel
         </Button>
       </Modal.Footer>
     </Modal>
-  );
-};
+  )
+}
 
-export default UserModal;
+
+export default Modaluser
+

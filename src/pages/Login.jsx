@@ -23,11 +23,15 @@ let navigate = useNavigate();
     }
     try {
         setloading(true);
+        // authencation part
         let LoginFunc = await signInWithEmailAndPassword(auth, useLog, userpass);
         console.log("authen Data", LoginFunc);  
+        // post request calling in service api page
         await getLogPost(formdata)
+        // page refresh
         setlog('')
         setpass('')
+
         successToast("Login Successfull"),
         navigate("/dashboard")
       }

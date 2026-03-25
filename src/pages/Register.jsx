@@ -39,8 +39,11 @@ const Register = () => {
     };
     try {
       setloading(true);
+      //authentication part
       await createUserWithEmailAndPassword(auth, useremail, userpass);
+      // post request calling in service api.js
       await getPost(formData);
+      //page refresh   
       setemail("");
       setpass("");
       setuser("");
@@ -50,6 +53,7 @@ const Register = () => {
       setradio("");
       setPhoneNo("");
       setskils([]);
+      //toaster Calling
       successToast("Register Successful");
     } catch (error) {
       errorToast(error.message);
@@ -69,6 +73,8 @@ const Register = () => {
       phoneNo,
     );
   };
+  // checkbox function
+  
   const handlecheck = (e) => {
     const { value, checked } = e.target;
     if (checked) {
@@ -247,12 +253,8 @@ const Register = () => {
                       <div className="form-item">
                         <input
                           type="file"
-                          onChange={(e) => {
-                            const file = e.target.files[0];
-                            if (file) {
-                              setimgurl(URL.createObjectURL(file));
-                            }
-                          }}
+                          onChange={(e) =>
+                            setimgurl(e.target.files[0]?.name) }
                         />
                       </div>
                     </Col>

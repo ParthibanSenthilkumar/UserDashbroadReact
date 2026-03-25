@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { errorToast } from "../Components/Toaster";
 
 const useFecth = (apiFunc) => {
+  // when pass paramter in apifunc() to receive in useFecthhook
   const [userdata, setuserdata] = useState([]);
   const [loading, setloading] = useState(false);
   const [error, seterror] = useState(null);
@@ -22,7 +23,7 @@ const useFecth = (apiFunc) => {
       setloading(false)
     }
    }
-  return { userdata, loading, error };
+  return { userdata, loading, error }; //  return the state using other page
 };
 
 export default useFecth;

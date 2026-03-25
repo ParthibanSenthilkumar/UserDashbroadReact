@@ -2,15 +2,17 @@ import React, { useState, useEffect } from "react";
 import useFecth from "../Hooks/useFecth";
 import Loader from "../Components/Loader";
 import { errorToast } from "../Components/Toaster";
-import UserModal from "../Components/userModal";
+import Modaluser from "../Components/Modaluser";
 import { getData } from "../Services/Api";
 
 const Dashboard = () => {
-  let {userdata,loading,error}=useFecth(getData)
+  //usefetch call and destructuring 
+  let {userdata,loading,error}=useFecth(getData) // call get request in service{api.js}
   
   const [show, setShow] = useState(false);
   const [currentRow, setCurrentRow] = useState(null);
   const handleClose = () => setShow(false);
+  //data send to props type to pass with useModal.jsx
   const handleShow = (userData) => {
     setCurrentRow(userData);
     setShow(true);
@@ -77,14 +79,14 @@ const Dashboard = () => {
               ))
             ) : (
               <tr>
-                <td>
-                  {" "}
-                  <p>User Not found</p>{" "}
+                <td colSpan={5} className="text-center pt-3">
+                  
+                  <p>User Not found</p>
                 </td>
               </tr>
             )}
-
-            <UserModal
+            {/* data to pass with modal probs type */}
+            <Modaluser
               show={show}
               handleClose={handleClose}
               currentRow={currentRow}
