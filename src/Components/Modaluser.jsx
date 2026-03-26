@@ -3,8 +3,9 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { Row, Col } from "react-bootstrap";
-import { getPatch } from "../Services/Api";
+import { delRequest, getPatch } from "../Services/Api";
 import { successToast } from "./Toaster";
+
 
 
 const Modaluser = ({ show, handleClose, currentRow }) => {
@@ -12,7 +13,8 @@ const Modaluser = ({ show, handleClose, currentRow }) => {
 
   let [isEdit, setEdit] = useState({});
   let [disabled, setdisabled] = useState(true);
-
+  
+  
   useEffect(() => {
     if (currentRow) {        
       setEdit(currentRow);
@@ -46,6 +48,13 @@ const Modaluser = ({ show, handleClose, currentRow }) => {
     setEdit({ ...isEdit, skils: updatedata });
   };
   // skils: updatedata -> to change name in  update data
+
+
+  const hangleDelete = async()=>{
+    await delRequest(currentRow.id)
+    successToast('User Data Delete Successfully')
+    handleClose()
+  }
 
   console.log(currentRow?.id, "id");
   return (
@@ -159,7 +168,7 @@ const Modaluser = ({ show, handleClose, currentRow }) => {
                   disabled={disabled}
                   checked={isEdit?.useradio === "female"}
                   onChange={(e) =>
-                    setEdit({ ...isEdit, gender: e.target.value })
+                    setEdit({ ...isEdit, useradio: e.target.value })
                   }
                 />
                 female
@@ -216,7 +225,9 @@ const Modaluser = ({ show, handleClose, currentRow }) => {
         <Button variant="secondary" onClick={() => handleEdit(currentRow.id)}>
           {disabled ? "Edit" : "save"}
         </Button>
-
+        <Button variant="danger" onClick={()=>hangleDelete(currentRow.id)}>
+          Delete
+        </Button>
         <Button variant="primary" onClick={handleClose}>
           Cancel
         </Button>

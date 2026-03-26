@@ -1,4 +1,5 @@
 import { errorToast } from "../Components/Toaster";
+import axios from 'axios'
 
 const BASEURL = "https://usermangement-19026-default-rtdb.firebaseio.com/";
 
@@ -16,6 +17,7 @@ export const getPost = async (data) => {
     console.log(data, "api page");
   } catch (error) {
     errorToast(error.message);
+    throw error
   }
 };
 // Login page post Request
@@ -32,6 +34,7 @@ export const getLogPost = async (logData) => {
     return res.json();
   } catch (error) {
     errorToast(error.message);
+    throw error
   }
 };
 
@@ -69,8 +72,27 @@ export let getPatch = async (editData, id) => {
     return res.json();
   } catch (error) {
     errorToast(error.message);
+    throw error
   }
 };
+
+// Delete Request 
+
+export const delRequest= async (id) =>{
+  try {
+    let res = await axios.delete(`${BASEURL}/useregister/${id}.json` )
+    return res.data
+  }
+  catch(error){
+    errorToast(error.message)
+    throw error
+  }
+}
+
+
+
+
+
 
 // export let fetchData = async (url) => {
 //   try {
