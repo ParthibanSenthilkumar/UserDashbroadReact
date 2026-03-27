@@ -24,7 +24,13 @@ const Register = () => {
     e.preventDefault();
 
     let imgpath = `http://localhost:5173/images/${imgUrl}`;
-    const formData = {
+
+    try {
+      setloading(true);
+      //authentication part
+     let RegisterAuth= await createUserWithEmailAndPassword(auth, useremail, userpass);
+     let Reguser= RegisterAuth.user
+      const formData = {
       user,
       useremail,
       userpass,
@@ -36,11 +42,8 @@ const Register = () => {
       phoneNo,
       imgUrl: imgpath,
       createdAt: new Date().toISOString(),
+      uid:Reguser.uid
     };
-    try {
-      setloading(true);
-      //authentication part
-      await createUserWithEmailAndPassword(auth, useremail, userpass);
       // post request calling in service api.js
       await getPost(formData);
       //page refresh   

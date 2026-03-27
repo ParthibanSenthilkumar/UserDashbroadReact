@@ -4,6 +4,7 @@ import Login from '../pages/Login'
 import Register from '../pages/Register'
 import Dashboard from '../pages/Dashboard'
 import Sidebar from '../Components/Sidebar'
+import Profile from '../pages/Profile'
 
 const Allroutes = () => {
   return (
@@ -15,7 +16,7 @@ const Allroutes = () => {
        <Route path="/dashboard" element={<Sidebar />}>
           <Route index  element={<Dashboard />} />
           <Route path="admin"   element={<Dashboard />} />
-          <Route path="user" element={<h2>User Page</h2>} />
+          <Route path="profile" element={<Profile /> } />
           <Route path="logout" element={<h2>Logout Page</h2>} />
       </Route>
       </Routes>

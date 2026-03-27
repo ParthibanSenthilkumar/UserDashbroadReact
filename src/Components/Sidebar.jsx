@@ -19,8 +19,8 @@ const Sidebar = () => {
               </Nav.Link>
             </li>
             <li className="nav-links">
-              <Nav.Link as={Link} to="user">
-                <i className="fa-solid fa-user-gear"></i> User
+              <Nav.Link as={Link} to="profile">
+                <i className="fa-solid fa-user-gear"></i> Profile
               </Nav.Link>
             </li>
             <li className="nav-links">
@@ -35,7 +35,7 @@ const Sidebar = () => {
             <h2>Dashboard</h2>
           </div>
           <div className="main-content">
-            <Outlet />{" "}
+            <Outlet />
             {/* child components rendering like eg: user.jsx,admin.jsx */}
           </div>
         </div>

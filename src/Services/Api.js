@@ -7,8 +7,8 @@ const BASEURL = "https://usermangement-19026-default-rtdb.firebaseio.com/";
 
 export const getPost = async (data) => {
   try {
-    const resData = await fetch(`${BASEURL}/useregister.json`, {
-      method: "POST",
+     await fetch(`${BASEURL}useregister.json`, {
+      method: "post",
       headers: {
         "content-type": "application/json",
       },
@@ -23,18 +23,17 @@ export const getPost = async (data) => {
 // Login page post Request
 
 export const getLogPost = async (logData) => {
-  try {
-    let res = await fetch(`${BASEURL}/UserLogin.json`, {
-      method: "POST",
+    try {
+    await fetch(`${BASEURL}UserLogin/.json`, {
+      method: "post",
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify(logData),
     });
-    return res.json();
   } catch (error) {
     errorToast(error.message);
-    throw error
+    throw error;
   }
 };
 
@@ -42,7 +41,7 @@ export const getLogPost = async (logData) => {
 
 export const getData = async () => {
   try {
-    let res = await fetch(`${BASEURL}/useregister.json`);
+    let res = await fetch(`${BASEURL}useregister.json`);
     let resData = await res.json();
     let resarry = [];
     for (let key in resData) {
@@ -62,7 +61,7 @@ export const getData = async () => {
 
 export let getPatch = async (editData, id) => {
   try {
-    let res = await fetch(`${BASEURL}/useregister/${id}.json`, {
+    let res = await fetch(`${BASEURL}useregister/${id}.json`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
@@ -80,7 +79,7 @@ export let getPatch = async (editData, id) => {
 
 export const delRequest= async (id) =>{
   try {
-    let res = await axios.delete(`${BASEURL}/useregister/${id}.json` )
+    let res = await axios.delete(`${BASEURL}useregister/${id}.json` )
     return res.data
   }
   catch(error){
@@ -88,6 +87,20 @@ export const delRequest= async (id) =>{
     throw error
   }
 }
+
+// profile Request
+export const loginDataFetch = async (uid) => {
+  let res = await axios.get(`${BASEURL}useregister.json`);
+
+  let data = res.data;
+
+  for (let key in data) {
+    if (data[key].uid === uid) {
+      return data[key]; 
+    }
+  } 
+  return null;
+};
 
 
 

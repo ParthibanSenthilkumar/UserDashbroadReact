@@ -17,17 +17,27 @@ let navigate = useNavigate();
 
   let handleSubmit = async (e) => {
     e.preventDefault();
-    let formdata={
-      useLog,
-      userpass,
-    }
+
+  
     try {
         setloading(true);
         // authencation part
         let LoginFunc = await signInWithEmailAndPassword(auth, useLog, userpass);
         console.log("authen Data", LoginFunc);  
+        let user= LoginFunc.user
+        localStorage.setItem('user',JSON.stringify({
+          uid:user.uid,
+          email:user.email,
+        }))
+        let formdata={
+          useLog,
+          userpass,
+          uid:user.uid
+        }
+        console.log(formdata,'login form Data');
+
         // post request calling in service api page
-        await getLogPost(formdata)
+        await getLogPost(formdata,user.uid)
         // page refresh
         setlog('')
         setpass('')
