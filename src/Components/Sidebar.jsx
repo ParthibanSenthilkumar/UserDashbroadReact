@@ -9,8 +9,10 @@ const Sidebar = () => {
           <ul>
             <li>
               <div className="user-logo">
-                
-                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="logo" />
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                  alt="logo"
+                />
               </div>
             </li>
             <li className="nav-links">
@@ -21,6 +23,11 @@ const Sidebar = () => {
             <li className="nav-links">
               <Nav.Link as={Link} to="profile">
                 <i className="fa-solid fa-user-gear"></i> Profile
+              </Nav.Link>
+            </li>
+            <li className="nav-links">
+              <Nav.Link as={Link} to="attenance">
+                <i className="fa-solid fa-user-gear"></i> Attenance
               </Nav.Link>
             </li>
             <li className="nav-links">
