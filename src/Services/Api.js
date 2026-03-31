@@ -24,7 +24,7 @@ export const getPost = async (data) => {
 
 export const getLogPost = async (logData) => {
     try {
-    await fetch(`${BASEURL}UserLogin/.json`, {
+    await fetch(`${BASEURL}UserLogin.json`, {
       method: "post",
       headers: {
         "content-type": "application/json",
@@ -101,8 +101,17 @@ export const loginDataFetch = async (uid) => {
   } 
   return null;
 };
-
-
+// attendance Post Request 
+export const createAttendance = async (data) => {
+  try {
+    const res = await axios.post(`${BASEURL}attendance.json`, data);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    errorToast(error.message);
+    throw error;
+  }
+}
 
 
 
