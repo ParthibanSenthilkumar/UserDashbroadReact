@@ -1,6 +1,7 @@
 import React from 'react'
 import {  Link, Outlet } from 'react-router-dom'
 import { Nav } from 'react-bootstrap'
+
 const Sidebar = () => {
   return (
     <>
@@ -9,7 +10,10 @@ const Sidebar = () => {
         <ul>
             <li>
               <div className="user-logo">
-                <img src="https://www.vecteezy.com/free-png/user" alt="logo" />
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                  alt="logo"
+                />
               </div>
             </li>
             <li className="nav-links">
@@ -18,8 +22,13 @@ const Sidebar = () => {
               </Nav.Link>
             </li>
             <li className="nav-links">
-              <Nav.Link as={Link}  to="user">
-                <i className="fa-solid fa-user-gear"></i> User
+              <Nav.Link as={Link} to="profile">
+                <i className="fa-solid fa-user-gear"></i> Profile
+              </Nav.Link>
+            </li>
+            <li className="nav-links">
+              <Nav.Link as={Link} to="attenance">
+                <i className="fa-solid fa-user-gear"></i> Attenance
               </Nav.Link>
             </li>
             <li className="nav-links">
@@ -33,8 +42,14 @@ const Sidebar = () => {
         <div className="topbar">
           <h2>Dashboard</h2>
         </div>
-        <div className="main-content">
-           <Outlet /> {/* child components rendering like eg: user.jsx,admin.jsx */}
+        <div className="main">
+          <div className="topbar">
+            <h2>Dashboard</h2>
+          </div>
+          <div className="main-content">
+            <Outlet />
+            {/* child components rendering like eg: user.jsx,admin.jsx */}
+          </div>
         </div>
       </div>
     </div>
@@ -42,4 +57,4 @@ const Sidebar = () => {
   )
 }  
 
-export default Sidebar
+export default Sidebar;

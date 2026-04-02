@@ -219,7 +219,7 @@ textarea {
   height: 100vh;
   border-radius: 10px;
 }
-.sidebar .nav-links {
+.sidebar .nav-link {
   font-size: 16px;
   font-weight: 500;
   color: #393939;
@@ -228,6 +228,9 @@ textarea {
   margin: 10px;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+.nav-links a:hover {
+  background: #e0e0e0;
 }
 .topbar {
   width: 100%;
@@ -239,9 +242,7 @@ textarea {
   padding: 10px;
   border-radius: 10px;
 }
-.nav-links a:hover {
-  background: #e0e0e0;
-}
+
 .main {
   flex: 1;
   padding: 10px;
@@ -270,13 +271,22 @@ textarea {
   font-weight: bold;
 }
 
-.Modal input {
-}
-
 @media (max-width: 480px) {
   .from-group,
   .form-group {
     margin: 32px 16px;
     padding: 28px 20px;
   }
+}
+.Profile_card {
+  max-width: 245px;
+  width: 100%;
+}
+.Profile_card .card-img-top{
+    max-width: 130px;
+    margin: auto;
+    padding: 10px;
+}
+.card-text span{
+  float: right;
 }

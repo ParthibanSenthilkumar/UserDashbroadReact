@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { errorToast } from "../Components/Toaster";
 
 const useFecth = (apiFunc) => {
-  // when pass paramter in apifunc() to receive in useFecthhook
+  // when pass paramter in apifunc() to receive  useFecthhook
   const [userdata, setuserdata] = useState([]);
   const [loading, setloading] = useState(false);
   const [error, seterror] = useState(null);

@@ -1,5 +1,5 @@
 ﻿import React, { useState } from "react";
-import { auth } from "../Firebase";
+import { auth } from "../Services/firebase";
 import { Link } from "react-router-dom";
 import Loader from "../Components/Loader";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -24,26 +24,33 @@ const Register = () => {
     e.preventDefault();
 
     let imgpath = `http://localhost:5173/images/${imgUrl}`;
-    const formData = {
-      user,
-      useremail,
-      userpass,
-      userAge,
-      userText,
-      region,
-      useradio,
-      skils,
-      phoneNo,
-      imgUrl: imgpath,
-      createdAt: new Date().toISOString(),
-    };
+
     try {
       setloading(true);
       //authentication part
-      await createUserWithEmailAndPassword(auth, useremail, userpass);
+      let RegisterAuth = await createUserWithEmailAndPassword(
+        auth,
+        useremail,
+        userpass,
+      );
+      let Reguser = RegisterAuth.user;
+      const formData = {
+        user,
+        useremail,
+        userpass,
+        userAge,
+        userText,
+        region,
+        useradio,
+        skils,
+        phoneNo,
+        imgUrl: imgpath,
+        createdAt: new Date().toISOString(),
+        uid: Reguser.uid,
+      };
       // post request calling in service api.js
       await getPost(formData);
-      //page refresh   
+      //page refresh
       setemail("");
       setpass("");
       setuser("");
@@ -74,7 +81,7 @@ const Register = () => {
     );
   };
   // checkbox function
-  
+
   const handlecheck = (e) => {
     const { value, checked } = e.target;
     if (checked) {
@@ -253,8 +260,7 @@ const Register = () => {
                       <div className="form-item">
                         <input
                           type="file"
-                          onChange={(e) =>
-                            setimgurl(e.target.files[0]?.name) }
+                          onChange={(e) => setimgurl(e.target.files[0]?.name)}
                         />
                       </div>
                     </Col>
