@@ -38,10 +38,6 @@ const Sidebar = () => {
             </li>
         </ul>
     </div>
-      < div className="main">
-        <div className="topbar">
-          <h2>Dashboard</h2>
-        </div>
         <div className="main">
           <div className="topbar">
             <h2>Dashboard</h2>
@@ -52,7 +48,6 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
-    </div>
     </>
   )
 }  
