@@ -1,12 +1,13 @@
-import React from "react";
-import { Link, Outlet } from "react-router-dom";
-import { Nav } from "react-bootstrap";
+import React from 'react'
+import {  Link, Outlet } from 'react-router-dom'
+import { Nav } from 'react-bootstrap'
+
 const Sidebar = () => {
   return (
     <>
-      <div className="wrapper d-flex align-items-stretch">
-        <div className="sidebar">
-          <ul>
+    <div className="wrapper d-flex align-items-stretch">
+    <div className="sidebar">
+        <ul>
             <li>
               <div className="user-logo">
                 <img
@@ -16,7 +17,7 @@ const Sidebar = () => {
               </div>
             </li>
             <li className="nav-links">
-              <Nav.Link as={Link} to="admin">
+              <Nav.Link as={Link} to='admin'>
                 <i className="fa-solid fa-user-gear"></i> Admin
               </Nav.Link>
             </li>
@@ -35,7 +36,11 @@ const Sidebar = () => {
                 <i className="fa-solid fa-user-gear"></i> Logout
               </Nav.Link>
             </li>
-          </ul>
+        </ul>
+    </div>
+      < div className="main">
+        <div className="topbar">
+          <h2>Dashboard</h2>
         </div>
         <div className="main">
           <div className="topbar">
@@ -47,8 +52,9 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
+    </div>
     </>
-  );
-};
+  )
+}  
 
 export default Sidebar;
