@@ -8,7 +8,7 @@ import Webcam from "react-webcam";
 import L from "leaflet";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
-import { createAttendance } from "../Services/Api";
+import { createAttendance, updateAttendance } from "../Services/Api";
 
 const DefaultIcon = L.icon({
   iconUrl: markerIcon,
@@ -16,13 +16,12 @@ const DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-  const handleTime = () => {
-    const time = new Date();
-    return `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
-  };
+const handleTime = () => {
+  const time = new Date();
+  return `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
+};
 
 const Attenance = () => {
-
   let [position, setposition] = useState(null);
   const webcamRef = useRef(null);
   const [image, setimage] = useState();
@@ -39,10 +38,10 @@ const Attenance = () => {
   };
 
   useEffect(() => {
-   let interval= setInterval(() => {
+    let interval = setInterval(() => {
       setTime(handleTime());
     }, 1000);
-    return ()=>clearInterval(interval)
+    return () => clearInterval(interval);
   }, []);
 
   const location = async () => {
@@ -58,36 +57,56 @@ const Attenance = () => {
     const capImage = webcamRef.current.getScreenshot();
     setimage(capImage);
   };
-const handleLogin = () => {
-  const currenttime = new Date();
-  setLoginTime(currenttime);
-};
+  const handlesave = async () => {
+    let userId = JSON.parse(localStorage.getItem("user"));
 
-const handleLogout = () => {
-  const currenttime = new Date();
-  setLogoutTime(currenttime);
-  const workTime = currenttime - loginTime;
-  console.log(workTime,"workTime");
+    if (!userId || !userId.uid) {
+      alert("User not logged in");
+      return;
+    }
 
-  const diffHrs = Math.floor(workTime / (1000 * 60 * 60));
-  const diffMins = Math.floor((workTime / (1000 * 60)) % 60);
+    let uid = userId.uid;
+    let attendanceId = localStorage.getItem("attendanceId");
 
-  setWorkingHours(`${diffHrs}h ${diffMins}m`);
-};
+    // 🟢 LOGIN SAVE
+    if (!attendanceId) {
+      let loginData = {
+        latitude: position?.[0] || null,
+        longitude: position?.[1] || null,
+        loginTime: new Date().toISOString(),
+        status: status || null,
+        image: image || null,
+      };
 
-  const handlesave = () => {
-    let AttendanceData = {
-      latitude: position?.[0],
-      longitude: position?.[1],
-      loginTime: loginTime,
-      logoutTime: loginTime,
-      workingHours: workingHours,
-      image: image,
-      status: status,
-    };
-    createAttendance(AttendanceData);
-    console.log(position, "position");
-    console.log(AttendanceData,'attendance data');
+      const res = await createAttendance(loginData, uid);
+
+      // ✅ save correct id
+      localStorage.setItem("attendanceId", res.name);
+
+      console.log("Login saved");
+    }
+
+    // 🔴 LOGOUT UPDATE
+    else {
+      const currenttime = new Date();
+      const workTime = currenttime - loginTime;
+
+      const diffHrs = Math.floor(workTime / (1000 * 60 * 60));
+      const diffMins = Math.floor((workTime / (1000 * 60)) % 60);
+
+      let updateData = {
+        logoutTime: currenttime.toISOString(),
+        workingHours: `${diffHrs}h ${diffMins}m`,
+      };
+
+      await updateAttendance(updateData, uid, attendanceId);
+
+      console.log("Logout updated ✅");
+
+      // clear session
+      localStorage.removeItem("attendanceId");
+    }
+
     handleClose();
   };
 
@@ -103,9 +122,7 @@ const handleLogout = () => {
               <option value="Work From Home"> Work From Home</option>
               <option value="Remote"> Remote</option>
             </select>
-            <h4>
-              Login Time: {loginTime ? loginTime?.toISOString() : "--"}
-            </h4>
+            <h4>Login Time: {loginTime ? loginTime?.toISOString() : "--"}</h4>
             <h4>
               Logout Time: {logoutTime ? logoutTime?.toISOString() : "--"}
             </h4>
@@ -119,14 +136,14 @@ const handleLogout = () => {
               handleShow();
               handleLogin();
             } else if (!logoutTime) {
+              setLogoutTime(new Date());
               handleLogout();
             }
           }}
         >
-      {loginTime && !logoutTime ? "Logout" : "Login"}
-    </Button>
+          {loginTime && !logoutTime ? "Logout" : "Login"}
+        </Button>
       </div>
-
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton></Modal.Header>
         <Modal.Body>
@@ -139,7 +156,7 @@ const handleLogout = () => {
             style={{ borderRadius: "50%" }}
           />
 
-          {/* {image && <img src={image} alt="captured" width="100%" />} */}
+          {image && <img src={image} alt="captured" width="100%" />}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCapture}>

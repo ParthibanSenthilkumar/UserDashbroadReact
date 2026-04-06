@@ -1,5 +1,5 @@
 import { errorToast } from "../Components/Toaster";
-import axios from 'axios'
+import axios from "axios";
 
 const BASEURL = "https://usermangement-19026-default-rtdb.firebaseio.com/";
 
@@ -7,7 +7,7 @@ const BASEURL = "https://usermangement-19026-default-rtdb.firebaseio.com/";
 
 export const getPost = async (data) => {
   try {
-     await fetch(`${BASEURL}useregister.json`, {
+    await fetch(`${BASEURL}useregister.json`, {
       method: "post",
       headers: {
         "content-type": "application/json",
@@ -17,15 +17,15 @@ export const getPost = async (data) => {
     console.log(data, "api page");
   } catch (error) {
     errorToast(error.message);
-    throw error
+    throw error;
   }
 };
 // Login page post Request
 
 export const getLogPost = async (logData) => {
-    try {
+  try {
     await fetch(`${BASEURL}UserLogin.json`, {
-      method: "post",
+      method: "PUT",
       headers: {
         "content-type": "application/json",
       },
@@ -71,22 +71,21 @@ export let getPatch = async (editData, id) => {
     return res.json();
   } catch (error) {
     errorToast(error.message);
-    throw error
+    throw error;
   }
 };
 
-// Delete Request 
+// Delete Request
 
-export const delRequest= async (id) =>{
+export const delRequest = async (id) => {
   try {
-    let res = await axios.delete(`${BASEURL}useregister/${id}.json` )
-    return res.data
+    let res = await axios.delete(`${BASEURL}useregister/${id}.json`);
+    return res.data;
+  } catch (error) {
+    errorToast(error.message);
+    throw error;
   }
-  catch(error){
-    errorToast(error.message)
-    throw error
-  }
-}
+};
 
 // profile Request
 export const loginDataFetch = async (uid) => {
@@ -96,26 +95,32 @@ export const loginDataFetch = async (uid) => {
 
   for (let key in data) {
     if (data[key].uid === uid) {
-      return data[key]; 
+      return data[key];
     }
-  } 
+  }
   return null;
 };
-// attendance Post Request 
-export const createAttendance = async (data) => {
+// attendance Post Request
+export const createAttendance = async (data, id) => {
   try {
-    const res = await axios.post(`${BASEURL}attendance.json`, data);
+    const res = await axios.post(
+      `${BASEURL}UserLogin/${id}/attendance.json`,
+      data,
+    );
+
     return res.data;
   } catch (error) {
     console.error(error);
     errorToast(error.message);
     throw error;
   }
-}
-
-
-
-
+};
+export const updateAttendance = async (data, uid, attendanceId) => {
+  return axios.patch(
+    `${BASEURL}UserLogin/${uid}/attendance/${attendanceId}.json`,
+    data,
+  );
+};
 // export let fetchData = async (url) => {
 //   try {
 //     setloading(true);
