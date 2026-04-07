@@ -1,142 +1,177 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Webcam from "react-webcam";
-
 import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
+
 import { createAttendance, updateAttendance } from "../Services/Api";
 
+// Fix Leaflet icon
 const DefaultIcon = L.icon({
   iconUrl: markerIcon,
   shadowUrl: markerShadow,
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
+// Time function
 const handleTime = () => {
   const time = new Date();
   return `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
 };
 
 const Attenance = () => {
-  let [position, setposition] = useState(null);
+  const [position, setPosition] = useState(null);
   const webcamRef = useRef(null);
-  const [image, setimage] = useState();
+  const [image, setImage] = useState(null);
   const [show, setShow] = useState(false);
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState("Work From Home");
+
   const [loginTime, setLoginTime] = useState(null);
   const [logoutTime, setLogoutTime] = useState(null);
   const [workingHours, setWorkingHours] = useState("");
-  const [time, setTime] = useState(() => handleTime());
+
+  const [time, setTime] = useState(handleTime());
+
   const handleClose = () => setShow(false);
+
   const handleShow = () => {
-    location();
+    getLocation();
     setShow(true);
   };
 
+  // Restore after refresh
   useEffect(() => {
-    let interval = setInterval(() => {
+    const storedLogin = localStorage.getItem("currentLoginTime");
+
+    if (storedLogin) {
+      setLoginTime(new Date(storedLogin));
+    }
+  }, []);
+
+  // Live clock
+  useEffect(() => {
+    const interval = setInterval(() => {
       setTime(handleTime());
     }, 1000);
+
     return () => clearInterval(interval);
   }, []);
 
-  const location = async () => {
+  // Location
+  const getLocation = () => {
     navigator.geolocation.getCurrentPosition((pos) => {
-      const lat = pos.coords.latitude;
-      const long = pos.coords.longitude;
-      setposition([lat, long]);
-      console.log(lat, long);
+      setPosition([pos.coords.latitude, pos.coords.longitude]);
     });
   };
 
+  // Capture image
   const handleCapture = () => {
     const capImage = webcamRef.current.getScreenshot();
-    setimage(capImage);
+    setImage(capImage);
   };
-  const handlesave = async () => {
-    let userId = JSON.parse(localStorage.getItem("user"));
 
-    if (!userId || !userId.uid) {
-      alert("User not logged in");
-      return;
-    }
+  // LOGIN BUTTON CLICK
+  const handleLoginClick = () => {
+    handleShow();
+  };
 
-    let uid = userId.uid;
-    let attendanceId = localStorage.getItem("attendanceId");
+  // SAVE (after capture)
+  const handleSave = async () => {
+    try {
+      const currentTime = new Date();
 
-    // 🟢 LOGIN SAVE
-    if (!attendanceId) {
-      let loginData = {
-        latitude: position?.[0] || null,
-        longitude: position?.[1] || null,
-        loginTime: new Date().toISOString(),
-        status: status || null,
-        image: image || null,
+      if (!position || !image) {
+        alert("Capture image and location required!");
+        return;
+      }
+
+      const attendanceData = {
+        latitude: position[0],
+        longitude: position[1],
+        loginTime: currentTime.toISOString(),
+        logoutTime: null,
+        workingHours: "",
+        image: image,
+        status: status,
       };
 
-      const res = await createAttendance(loginData, uid);
+      const recordId = await createAttendance(attendanceData);
 
-      // ✅ save correct id
-      localStorage.setItem("attendanceId", res.name);
+      // Store for logout
+      localStorage.setItem("attendanceId", recordId);
+      localStorage.setItem("currentLoginTime", currentTime.toISOString());
 
-      console.log("Login saved");
+      setLoginTime(currentTime);
+      handleClose();
+    } catch (err) {
+      console.error("Error saving attendance:", err);
     }
+  };
 
-    // 🔴 LOGOUT UPDATE
-    else {
-      const currenttime = new Date();
-      const workTime = currenttime - loginTime;
+  // LOGOUT
+  const handleLogout = async () => {
+    try {
+      const attendanceId = localStorage.getItem("attendanceId");
 
-      const diffHrs = Math.floor(workTime / (1000 * 60 * 60));
-      const diffMins = Math.floor((workTime / (1000 * 60)) % 60);
+      if (!attendanceId) {
+        alert("Please login first!");
+        return;
+      }
 
-      let updateData = {
-        logoutTime: currenttime.toISOString(),
-        workingHours: `${diffHrs}h ${diffMins}m`,
+      const currentTime = new Date();
+      const storedLoginTime = localStorage.getItem("currentLoginTime");
+
+      const login = new Date(storedLoginTime);
+
+      const diff = currentTime - login;
+
+      const hrs = Math.floor(diff / (1000 * 60 * 60));
+      const mins = Math.floor((diff / (1000 * 60)) % 60);
+
+      const workString = `${hrs}h ${mins}m`;
+
+      const updateData = {
+        logoutTime: currentTime.toISOString(),
+        workingHours: workString,
       };
 
-      await updateAttendance(updateData, uid, attendanceId);
+      await updateAttendance(updateData, attendanceId);
 
-      console.log("Logout updated ✅");
+      setLogoutTime(currentTime);
+      setWorkingHours(workString);
 
-      // clear session
+      // Clear storage
       localStorage.removeItem("attendanceId");
+      localStorage.removeItem("currentLoginTime");
+    } catch (err) {
+      console.error("Error updating attendance:", err);
     }
-
-    handleClose();
   };
 
   return (
     <>
       <div className="login-card">
-        <h1 className="title">Welcome</h1>
+        <h1>Welcome</h1>
         <h3>{time}</h3>
-        <div className="formgroup">
-          <div className="form-item">
-            <label htmlFor="Select Work Mode">Select Work Mode</label>
-            <select value={status} onChange={(e) => setStatus(e.target.value)}>
-              <option value="Work From Home"> Work From Home</option>
-              <option value="Remote"> Remote</option>
-            </select>
-            <h4>Login Time: {loginTime ? loginTime?.toISOString() : "--"}</h4>
-            <h4>
-              Logout Time: {logoutTime ? logoutTime?.toISOString() : "--"}
-            </h4>
-            <h4>Working Hours: {workingHours || "--"}</h4>
-          </div>
-        </div>
+
+        <select value={status} onChange={(e) => setStatus(e.target.value)}>
+          <option value="Work From Home">Work From Home</option>
+          <option value="Remote">Remote</option>
+        </select>
+
+        <h4>Login: {loginTime ? loginTime.toLocaleString() : "--"}</h4>
+        <h4>Logout: {logoutTime ? logoutTime.toLocaleString() : "--"}</h4>
+        <h4>Working Hours: {workingHours || "--"}</h4>
+
         <Button
-          variant="primary"
           onClick={() => {
             if (!loginTime) {
-              handleShow();
-              handleLogin();
+              handleLoginClick();
             } else if (!logoutTime) {
-              setLogoutTime(new Date());
               handleLogout();
             }
           }}
@@ -144,27 +179,18 @@ const Attenance = () => {
           {loginTime && !logoutTime ? "Logout" : "Login"}
         </Button>
       </div>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton></Modal.Header>
-        <Modal.Body>
-          <Webcam
-            ref={webcamRef}
-            screenshotFormat="image/jpeg"
-            width="40%"
-            height="60%"
-            className="d-block m-auto"
-            style={{ borderRadius: "50%" }}
-          />
 
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton />
+
+        <Modal.Body>
+          <Webcam ref={webcamRef} screenshotFormat="image/jpeg" width="100%" />
           {image && <img src={image} alt="captured" width="100%" />}
         </Modal.Body>
+
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCapture}>
-            Capture
-          </Button>
-          <Button variant="primary" onClick={handlesave}>
-            Save Changes
-          </Button>
+          <Button onClick={handleCapture}>Capture</Button>
+          <Button onClick={handleSave}>Save</Button>
         </Modal.Footer>
       </Modal>
     </>

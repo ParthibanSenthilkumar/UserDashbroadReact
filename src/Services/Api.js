@@ -3,63 +3,67 @@ import axios from "axios";
 
 const BASEURL = "https://usermangement-19026-default-rtdb.firebaseio.com/";
 
-// Register page post Request
-
+// ✅ REGISTER
 export const getPost = async (data) => {
   try {
     await fetch(`${BASEURL}useregister.json`, {
-      method: "post",
+      method: "POST",
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify(data),
     });
-    console.log(data, "api page");
   } catch (error) {
     errorToast(error.message);
     throw error;
   }
 };
-// Login page post Request
 
+// ✅ LOGIN (FIXED: POST + store key)
 export const getLogPost = async (logData) => {
   try {
-    await fetch(`${BASEURL}UserLogin.json`, {
-      method: "PUT",
+    const res = await fetch(`${BASEURL}UserLogin.json`, {
+      method: "POST", // ✅ FIXED
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify(logData),
     });
+
+    const data = await res.json();
+
+    // ✅ Store Firebase generated key
+    localStorage.setItem("loginId", data.name);
+
+    return data.name;
   } catch (error) {
     errorToast(error.message);
     throw error;
   }
 };
 
-// Dashboard page get Request
-
+// ✅ GET USERS
 export const getData = async () => {
   try {
     let res = await fetch(`${BASEURL}useregister.json`);
     let resData = await res.json();
-    let resarry = [];
+
+    let arr = [];
     for (let key in resData) {
-      resarry.push({
+      arr.push({
         id: key,
         ...resData[key],
       });
     }
-    return resarry;
+    return arr;
   } catch (error) {
     console.error("API Error:", error);
     throw error;
   }
 };
 
-// Edit page Patch Request
-
-export let getPatch = async (editData, id) => {
+// ✅ PATCH USER
+export const getPatch = async (editData, id) => {
   try {
     let res = await fetch(`${BASEURL}useregister/${id}.json`, {
       method: "PATCH",
@@ -75,8 +79,7 @@ export let getPatch = async (editData, id) => {
   }
 };
 
-// Delete Request
-
+// ✅ DELETE USER
 export const delRequest = async (id) => {
   try {
     let res = await axios.delete(`${BASEURL}useregister/${id}.json`);
@@ -87,10 +90,9 @@ export const delRequest = async (id) => {
   }
 };
 
-// profile Request
+// ✅ GET PROFILE
 export const loginDataFetch = async (uid) => {
   let res = await axios.get(`${BASEURL}useregister.json`);
-
   let data = res.data;
 
   for (let key in data) {
@@ -100,36 +102,41 @@ export const loginDataFetch = async (uid) => {
   }
   return null;
 };
-// attendance Post Request
-export const createAttendance = async (data, id) => {
+
+// ✅ CREATE ATTENDANCE
+export const createAttendance = async (data) => {
   try {
+    const loginId = localStorage.getItem("loginId");
+
+    if (!loginId) throw new Error("Login ID missing");
+
     const res = await axios.post(
-      `${BASEURL}UserLogin/${id}/attendance.json`,
+      `${BASEURL}UserLogin/${loginId}/attendance.json`,
+      data,
+    );
+
+    return res.data.name;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+// ✅ UPDATE ATTENDANCE
+export const updateAttendance = async (data, attendanceId) => {
+  try {
+    const loginId = localStorage.getItem("loginId");
+
+    if (!loginId) throw new Error("Login ID missing");
+
+    const res = await axios.patch(
+      `${BASEURL}UserLogin/${loginId}/attendance/${attendanceId}.json`,
       data,
     );
 
     return res.data;
   } catch (error) {
     console.error(error);
-    errorToast(error.message);
     throw error;
   }
 };
-export const updateAttendance = async (data, uid, attendanceId) => {
-  return axios.patch(
-    `${BASEURL}UserLogin/${uid}/attendance/${attendanceId}.json`,
-    data,
-  );
-};
-// export let fetchData = async (url) => {
-//   try {
-//     setloading(true);
-
-//     setdata(resarry);
-//   } catch (error) {
-//     seterror(error.message);
-//   } finally {
-//     setloading(false);
-//   }
-// };
-// fetchData();
