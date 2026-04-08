@@ -19,30 +19,28 @@ export const getPost = async (data) => {
   }
 };
 
-// ✅ LOGIN (FIXED: POST + store key)
+
 export const getLogPost = async (logData) => {
   try {
     const res = await fetch(`${BASEURL}UserLogin.json`, {
-      method: "POST", // ✅ FIXED
+      method: "POST",
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify(logData),
     });
-
     const data = await res.json();
 
-    // ✅ Store Firebase generated key
     localStorage.setItem("loginId", data.name);
-
     return data.name;
+
   } catch (error) {
     errorToast(error.message);
     throw error;
   }
 };
 
-// ✅ GET USERS
+// GET USERS
 export const getData = async () => {
   try {
     let res = await fetch(`${BASEURL}useregister.json`);
@@ -62,7 +60,7 @@ export const getData = async () => {
   }
 };
 
-// ✅ PATCH USER
+//  PATCH USER
 export const getPatch = async (editData, id) => {
   try {
     let res = await fetch(`${BASEURL}useregister/${id}.json`, {
@@ -79,7 +77,7 @@ export const getPatch = async (editData, id) => {
   }
 };
 
-// ✅ DELETE USER
+//DELETE USER
 export const delRequest = async (id) => {
   try {
     let res = await axios.delete(`${BASEURL}useregister/${id}.json`);
@@ -90,7 +88,7 @@ export const delRequest = async (id) => {
   }
 };
 
-// ✅ GET PROFILE
+// GET PROFILE
 export const loginDataFetch = async (uid) => {
   let res = await axios.get(`${BASEURL}useregister.json`);
   let data = res.data;
@@ -103,7 +101,7 @@ export const loginDataFetch = async (uid) => {
   return null;
 };
 
-// ✅ CREATE ATTENDANCE
+//  CREATE ATTENDANCE
 export const createAttendance = async (data) => {
   try {
     const loginId = localStorage.getItem("loginId");
@@ -122,18 +120,15 @@ export const createAttendance = async (data) => {
   }
 };
 
-// ✅ UPDATE ATTENDANCE
+//  UPDATE ATTENDANCE
 export const updateAttendance = async (data, attendanceId) => {
   try {
-    const loginId = localStorage.getItem("loginId");
-
+    const loginId = localStorage.getItem("attendanceLoginId"); 
     if (!loginId) throw new Error("Login ID missing");
-
     const res = await axios.patch(
       `${BASEURL}UserLogin/${loginId}/attendance/${attendanceId}.json`,
-      data,
+      data
     );
-
     return res.data;
   } catch (error) {
     console.error(error);

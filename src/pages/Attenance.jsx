@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import Webcam from "react-webcam";
+// import Webcam from "react-webcam";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -43,14 +43,6 @@ const Attenance = () => {
     setShow(true);
   };
 
-  // Restore after refresh
-  useEffect(() => {
-    const storedLogin = localStorage.getItem("currentLoginTime");
-
-    if (storedLogin) {
-      setLoginTime(new Date(storedLogin));
-    }
-  }, []);
 
   // Live clock
   useEffect(() => {
@@ -61,6 +53,25 @@ const Attenance = () => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+  const loginId = localStorage.getItem("loginId");
+
+  if (!loginId) {
+    alert("Please login first!");
+    // optionally redirect
+  }
+}, []);
+
+  useEffect(() => {
+    const storedLogin = localStorage.getItem("currentLoginTime");
+    const storedLogout = localStorage.getItem("logoutTime");
+    const storedWork = localStorage.getItem("workingHours");
+
+    if (storedLogin) setLoginTime(new Date(storedLogin));
+    if (storedLogout) setLogoutTime(new Date(storedLogout));
+    if (storedWork) setWorkingHours(storedWork);
+  }, []);
+
   // Location
   const getLocation = () => {
     navigator.geolocation.getCurrentPosition((pos) => {
@@ -68,11 +79,11 @@ const Attenance = () => {
     });
   };
 
-  // Capture image
-  const handleCapture = () => {
-    const capImage = webcamRef.current.getScreenshot();
-    setImage(capImage);
-  };
+  // // Capture image
+  // const handleCapture = () => {
+  //   const capImage = webcamRef.current.getScreenshot();
+  //   setImage(capImage);
+  // };
 
   // LOGIN BUTTON CLICK
   const handleLoginClick = () => {
@@ -84,10 +95,11 @@ const Attenance = () => {
     try {
       const currentTime = new Date();
 
-      if (!position || !image) {
-        alert("Capture image and location required!");
-        return;
-      }
+      // if (!position || !image) {
+      //   alert("Capture image and location required!");
+      //   return;
+      // }
+      console.log("loginId:", localStorage.getItem("loginId"));
 
       const attendanceData = {
         latitude: position[0],
@@ -104,6 +116,12 @@ const Attenance = () => {
       // Store for logout
       localStorage.setItem("attendanceId", recordId);
       localStorage.setItem("currentLoginTime", currentTime.toISOString());
+      localStorage.setItem("attendanceLoginId", localStorage.getItem("loginId"));
+
+      setLogoutTime(null);
+      setWorkingHours("");
+      localStorage.removeItem("logoutTime");
+      localStorage.removeItem("workingHours");
 
       setLoginTime(currentTime);
       handleClose();
@@ -113,44 +131,47 @@ const Attenance = () => {
   };
 
   // LOGOUT
-  const handleLogout = async () => {
-    try {
-      const attendanceId = localStorage.getItem("attendanceId");
+const handleLogout = async () => {
+  try {
+    const attendanceId = localStorage.getItem("attendanceId");
 
-      if (!attendanceId) {
-        alert("Please login first!");
-        return;
-      }
-
-      const currentTime = new Date();
-      const storedLoginTime = localStorage.getItem("currentLoginTime");
-
-      const login = new Date(storedLoginTime);
-
-      const diff = currentTime - login;
-
-      const hrs = Math.floor(diff / (1000 * 60 * 60));
-      const mins = Math.floor((diff / (1000 * 60)) % 60);
-
-      const workString = `${hrs}h ${mins}m`;
-
-      const updateData = {
-        logoutTime: currentTime.toISOString(),
-        workingHours: workString,
-      };
-
-      await updateAttendance(updateData, attendanceId);
-
-      setLogoutTime(currentTime);
-      setWorkingHours(workString);
-
-      // Clear storage
-      localStorage.removeItem("attendanceId");
-      localStorage.removeItem("currentLoginTime");
-    } catch (err) {
-      console.error("Error updating attendance:", err);
+    if (!attendanceId) {
+      alert("Please login first!");
+      return;
     }
-  };
+
+    const currentTime = new Date();
+    const storedLoginTime = localStorage.getItem("currentLoginTime");
+
+    const login = new Date(storedLoginTime);
+    const diff = currentTime - login;
+
+    const hrs = Math.floor(diff / (1000 * 60 * 60));
+    const mins = Math.floor((diff / (1000 * 60)) % 60);
+
+    const workString = `${hrs}h ${mins}m`;
+
+    const updateData = {
+      logoutTime: currentTime.toISOString(),
+      workingHours: workString,
+    };
+
+    await updateAttendance(updateData, attendanceId);
+
+    // SAVE for refresh
+    localStorage.setItem("logoutTime", currentTime.toISOString());
+    localStorage.setItem("workingHours", workString);
+
+    setLogoutTime(currentTime);
+    setWorkingHours(workString);
+
+    // clear
+    localStorage.removeItem("attendanceId");
+    localStorage.removeItem("attendanceLoginId");
+  } catch (err) {
+    console.error("Error updating attendance:", err);
+  }
+};
 
   return (
     <>
@@ -168,28 +189,23 @@ const Attenance = () => {
         <h4>Working Hours: {workingHours || "--"}</h4>
 
         <Button
-          onClick={() => {
-            if (!loginTime) {
-              handleLoginClick();
-            } else if (!logoutTime) {
-              handleLogout();
-            }
-          }}
-        >
+          onClick={loginTime && !logoutTime ? handleLogout : handleLoginClick}
+          >
           {loginTime && !logoutTime ? "Logout" : "Login"}
         </Button>
+        
       </div>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton />
 
         <Modal.Body>
-          <Webcam ref={webcamRef} screenshotFormat="image/jpeg" width="100%" />
+          {/* <Webcam ref={webcamRef} screenshotFormat="image/jpeg" width="100%" /> */}
           {image && <img src={image} alt="captured" width="100%" />}
         </Modal.Body>
 
         <Modal.Footer>
-          <Button onClick={handleCapture}>Capture</Button>
+          {/* <Button onClick={handleCapture}>Capture</Button> */}
           <Button onClick={handleSave}>Save</Button>
         </Modal.Footer>
       </Modal>
