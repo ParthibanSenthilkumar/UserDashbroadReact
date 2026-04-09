@@ -290,3 +290,17 @@ textarea {
 .card-text span{
   float: right;
 }
+.login-card{
+  max-width: 500px;
+  width: 100%;
+  margin: 50px auto;
+  padding: 30px;
+  text-align: center;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 5px;
+}
+.d-flex h4{
+  font-size: 15px;
+    font-weight: 400;
+    margin: 10px 0px 20px 0px;
+}

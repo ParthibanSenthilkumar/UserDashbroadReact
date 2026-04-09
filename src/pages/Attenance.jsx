@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import Webcam from "react-webcam";
+import Webcam from "react-webcam";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -54,12 +54,7 @@ const Attenance = () => {
   }, []);
 
   useEffect(() => {
-  const loginId = localStorage.getItem("loginId");
-
-  if (!loginId) {
-    alert("Please login first!");
-    // optionally redirect
-  }
+  localStorage.getItem("loginId");
 }, []);
 
   useEffect(() => {
@@ -80,10 +75,10 @@ const Attenance = () => {
   };
 
   // // Capture image
-  // const handleCapture = () => {
-  //   const capImage = webcamRef.current.getScreenshot();
-  //   setImage(capImage);
-  // };
+  const handleCapture = () => {
+    const capImage = webcamRef.current.getScreenshot();
+    setImage(capImage);
+  };
 
   // LOGIN BUTTON CLICK
   const handleLoginClick = () => {
@@ -102,8 +97,8 @@ const Attenance = () => {
       console.log("loginId:", localStorage.getItem("loginId"));
 
       const attendanceData = {
-        latitude: position[0],
-        longitude: position[1],
+        latitude: position?.[0],
+        longitude: position?.[1],
         loginTime: currentTime.toISOString(),
         logoutTime: null,
         workingHours: "",
@@ -112,7 +107,8 @@ const Attenance = () => {
       };
 
       const recordId = await createAttendance(attendanceData);
-
+      console.log(recordId,'resposnse id');
+      
       // Store for logout
       localStorage.setItem("attendanceId", recordId);
       localStorage.setItem("currentLoginTime", currentTime.toISOString());
@@ -178,16 +174,17 @@ const handleLogout = async () => {
       <div className="login-card">
         <h1>Welcome</h1>
         <h3>{time}</h3>
-
+        <div className="form-item">
         <select value={status} onChange={(e) => setStatus(e.target.value)}>
           <option value="Work From Home">Work From Home</option>
           <option value="Remote">Remote</option>
         </select>
-
+        </div>
+        <div className="d-flex align-items-center justify-content-between">
         <h4>Login: {loginTime ? loginTime.toLocaleString() : "--"}</h4>
         <h4>Logout: {logoutTime ? logoutTime.toLocaleString() : "--"}</h4>
+        </div>
         <h4>Working Hours: {workingHours || "--"}</h4>
-
         <Button
           onClick={loginTime && !logoutTime ? handleLogout : handleLoginClick}
           >
@@ -200,12 +197,12 @@ const handleLogout = async () => {
         <Modal.Header closeButton />
 
         <Modal.Body>
-          {/* <Webcam ref={webcamRef} screenshotFormat="image/jpeg" width="100%" /> */}
+         <Webcam ref={webcamRef} screenshotFormat="image/jpeg" width="100%" />
           {image && <img src={image} alt="captured" width="100%" />}
         </Modal.Body>
 
         <Modal.Footer>
-          {/* <Button onClick={handleCapture}>Capture</Button> */}
+          <Button onClick={handleCapture}>Capture</Button>
           <Button onClick={handleSave}>Save</Button>
         </Modal.Footer>
       </Modal>
