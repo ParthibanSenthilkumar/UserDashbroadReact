@@ -1,3 +1,4 @@
+import { data } from "react-router-dom";
 import { errorToast } from "../Components/Toaster";
 import axios from "axios";
 
@@ -123,7 +124,7 @@ export const createAttendance = async (data) => {
 //  UPDATE ATTENDANCE
 export const updateAttendance = async (data, attendanceId) => {
   try {
-    const loginId = localStorage.getItem("attendanceLoginId"); 
+    const loginId = localStorage.getItem("loginId"); 
     if (!loginId) throw new Error("Login ID missing");
     const res = await axios.patch(
       `${BASEURL}UserLogin/${loginId}/attendance/${attendanceId}.json`,
@@ -135,3 +136,27 @@ export const updateAttendance = async (data, attendanceId) => {
     throw error;
   }
 };
+
+
+// user Attandance  get requset
+
+export const AttandanceData= async ()=>{
+try{
+  const loginId = localStorage.getItem("loginId");
+  let res =await axios.get(`${BASEURL}UserLogin/${loginId}/attendance.json`)
+  let responseData=res.data
+  let resarr=[]
+  for( let key in responseData ){
+    resarr.push({
+      id:key,
+      ...responseData[key]
+    })
+  }
+  return resarr
+}
+catch(error){
+  errorToast(error.message)
+}
+}
+
+

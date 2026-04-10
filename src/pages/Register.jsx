@@ -105,180 +105,185 @@ const Register = () => {
 
   return (
     <Container>
-      <Row>
-        {loading ? (
-          <div className="d-flex justify-content-center align-items-center vh-100">
-            <Loader />
-          </div>
-        ) : (
-          <>
-            {/* Left Side */}
-            <Col
-              lg={5}
-              className="d-flex justify-content-center align-items-center "
-            >
-              <div className="left-side">
-                <img
-                  src={
-                    "https://img.freepik.com/free-vector/businessman-businesswoman-looking-computer-monitor_1262-21450.jpg"
-                  }
-                  style={{ maxWidth: "469px" }}
-                  alt="preview"
-                />
-              </div>
-            </Col>
+      <div className="form-main">
+        <Row>
+          {loading ? (
+            <div className="d-flex justify-content-center align-items-center vh-100">
+              <Loader />
+            </div>
+          ) : (
+            <>
+              {/* Left Side */}
+              <Col
+                lg={6}
+                className="d-flex justify-content-center align-items-center position-relative"
+                style={{background:"#fafafa"}}
+              >
+                <div className="left-side ">
+                  <div className="logo">Register Now</div>
+                  <img
+                    src={
+                      "https://img.freepik.com/free-vector/businessman-businesswoman-looking-computer-monitor_1262-21450.jpg"
+                    }
+                    style={{ maxWidth: "469px" }}
+                    alt="preview"
+                  />
+                </div>
+              </Col>
 
-            {/* Right Side */}
-            <Col lg={7}>
-              <div className="right-side form-group1 w-100">
-                <form onSubmit={handleSubmit}>
-                  <h2 className="title"> Register</h2>
-                  <Row>
-                    <Col lg={6}>
-                      <div className="form-item">
-                        <input
-                          type="text"
-                          placeholder="Name"
-                          value={user}
-                          onChange={(e) => setuser(e.target.value)}
-                        />
-                      </div>
-                    </Col>
-
-                    <Col lg={6}>
-                      <div className="form-item">
-                        <input
-                          type="email"
-                          placeholder="Email"
-                          value={useremail}
-                          onChange={(e) => setemail(e.target.value)}
-                        />
-                      </div>
-                    </Col>
-
-                    <Col lg={6}>
-                      <div className="form-item">
-                        <input
-                          type="password"
-                          placeholder="Password"
-                          value={userpass}
-                          onChange={(e) => setpass(e.target.value)}
-                        />
-                      </div>
-                    </Col>
-
-                    <Col lg={6}>
-                      <div className="form-item">
-                        <input
-                          type="number"
-                          placeholder="Age"
-                          value={userAge}
-                          onChange={(e) => setAge(e.target.value)}
-                        />
-                      </div>
-                    </Col>
-                    <Col lg={6}>
-                      <div className="form-item">
-                        <input
-                          type="number"
-                          placeholder="Phone Number"
-                          value={phoneNo}
-                          onChange={(e) => setPhoneNo(e.target.value)}
-                        />
-                      </div>
-                    </Col>
-                    <Col lg={6}>
-                      <div className="form-item">
-                        <select
-                          value={region}
-                          onChange={(e) => setregion(e.target.value)}
-                        >
-                          <option value="">Select Region</option>
-                          <option value="india">India</option>
-                          <option value="others">Others</option>
-                        </select>
-                      </div>
-                    </Col>
-
-                    <Col lg={6}>
-                      <div className="form-item">
-                        <label>Skills:</label>
-                        <span>
+              {/* Right Side */}
+              <Col lg={6}>
+              <div className="right-side form-group1 "style={{boxShadow: "unset"}} >
+                  <form onSubmit={handleSubmit}>
+                    <h2 className="title"> Register</h2>
+                    <Row>
+                      <Col lg={6}>
+                        <div className="form-item">
                           <input
-                            type="checkbox"
-                            value="html"
-                            checked={skils.includes("html")}
-                            onChange={handlecheck}
+                            type="text"
+                            placeholder="Name"
+                            value={user}
+                            onChange={(e) => setuser(e.target.value)}
                           />
-                          HTML
-                        </span>
-                        <span>
-                          <input
-                            type="checkbox"
-                            value="css"
-                            checked={skils.includes("css")}
-                            onChange={handlecheck}
-                          />
-                          CSS
-                        </span>
-                      </div>
-                    </Col>
+                        </div>
+                      </Col>
 
-                    <Col lg={6}>
-                      <div className="form-item">
-                        <label>Gender:</label>
-                        <span>
+                      <Col lg={6}>
+                        <div className="form-item">
                           <input
-                            type="radio"
-                            value="male"
-                            checked={useradio === "male"}
-                            onChange={(e) => setradio(e.target.value)}
+                            type="email"
+                            placeholder="Email"
+                            value={useremail}
+                            onChange={(e) => setemail(e.target.value)}
                           />
-                          Male
-                        </span>
-                        <span>
+                        </div>
+                      </Col>
+
+                      <Col lg={6}>
+                        <div className="form-item">
                           <input
-                            type="radio"
-                            value="female"
-                            checked={useradio === "female"}
-                            onChange={(e) => setradio(e.target.value)}
+                            type="password"
+                            placeholder="Password"
+                            value={userpass}
+                            onChange={(e) => setpass(e.target.value)}
                           />
-                          Female
-                        </span>
-                      </div>
-                    </Col>
-                    <Col lg={6}>
-                      <div className="form-item">
-                        <textarea
-                          placeholder="Address"
-                          value={userText}
-                          onChange={(e) => setText(e.target.value)}
-                        />
-                      </div>
-                    </Col>
-                    <Col lg={6}>
-                      <div className="form-item">
-                        <input
-                          type="file"
-                          onChange={(e) => setimgurl(e.target.files[0]?.name)}
-                        />
-                      </div>
-                    </Col>
+                        </div>
+                      </Col>
 
-                    <button type="submit" className="btn-gradient">
-                      Register
-                    </button>
-                  </Row>
-                </form>
+                      <Col lg={6}>
+                        <div className="form-item">
+                          <input
+                            type="number"
+                            placeholder="Age"
+                            value={userAge}
+                            onChange={(e) => setAge(e.target.value)}
+                          />
+                        </div>
+                      </Col>
+                      <Col lg={6}>
+                        <div className="form-item">
+                          <input
+                            type="number"
+                            placeholder="Phone Number"
+                            value={phoneNo}
+                            onChange={(e) => setPhoneNo(e.target.value)}
+                          />
+                        </div>
+                      </Col>
+                      <Col lg={6}>
+                        <div className="form-item">
+                          <select
+                            value={region}
+                            onChange={(e) => setregion(e.target.value)}
+                          >
+                            <option value="">Select Region</option>
+                            <option value="india">India</option>
+                            <option value="others">Others</option>
+                          </select>
+                        </div>
+                      </Col>
 
-                <h5 className="footer_text">
-                  Already have account? <Link to="/login">Login</Link>
-                </h5>
-              </div>
-            </Col>
-          </>
-        )}
-      </Row>
+                      <Col lg={6}>
+                        <div className="form-item">
+                          <label>Skills:</label>
+                          <span>
+                            <input
+                              type="checkbox"
+                              value="html"
+                              checked={skils.includes("html")}
+                              onChange={handlecheck}
+                            />
+                            HTML
+                          </span>
+                          <span>
+                            <input
+                              type="checkbox"
+                              value="css"
+                              checked={skils.includes("css")}
+                              onChange={handlecheck}
+                            />
+                            CSS
+                          </span>
+                        </div>
+                      </Col>
+
+                      <Col lg={6}>
+                        <div className="form-item">
+                          <label>Gender:</label>
+                          <span>
+                            <input
+                              type="radio"
+                              value="male"
+                              checked={useradio === "male"}
+                              onChange={(e) => setradio(e.target.value)}
+                            />
+                            Male
+                          </span>
+                          <span>
+                            <input
+                              type="radio"
+                              value="female"
+                              checked={useradio === "female"}
+                              onChange={(e) => setradio(e.target.value)}
+                            />
+                            Female
+                          </span>
+                        </div>
+                      </Col>
+                      <Col lg={6}>
+                        <div className="form-item">
+                          <textarea
+                            placeholder="Address"
+                            value={userText}
+                            onChange={(e) => setText(e.target.value)}
+                          />
+                        </div>
+                      </Col>
+                      <Col lg={6}>
+                        <div className="form-item">
+                          <input
+                            type="file"
+                            onChange={(e) => setimgurl(e.target.files[0]?.name)}
+                          />
+                        </div>
+                      </Col>
+
+                      <button type="submit" className="btn-gradient">
+                        Register
+                      </button>
+                    </Row>                  
+                    <h5 className="footer_text">
+                    Already have account? <Link to="/login">Login</Link>
+                  </h5>
+                  </form>
+
+
+                </div>
+              </Col>
+            </>
+          )}
+        </Row>
+      </div>
     </Container>
   );
 };

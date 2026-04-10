@@ -56,57 +56,60 @@ const Login = () => {
   return (
     <>
       <Container>
-        <Row>
-          {loading ? (
-            <div className="d-flex align-items-center justify-content-center vh-100 vw-100">
-              <Loader />
-            </div>
-          ) : (
-            <>
-              <Col
-                lg={6}
-                className="d-flex justify-content-center align-items-center"
-              >
-                <div className="left-side">
-                  <img
-                    src={
-                      "https://img.freepik.com/free-vector/businessman-businesswoman-looking-computer-monitor_1262-21450.jpg"
-                    }
-                    alt="login image  "
-                  />
-                </div>
-              </Col>
-              <Col lg={6} className="right-side">
-                <div className="from-group">
-                  <form onSubmit={handleSubmit}>
-                    <div className="form-item">
-                      <input
-                        type="text"
-                        value={useLog}
-                        placeholder="enter the Email"
-                        onChange={(e) => setlog(e.target.value)}
-                      />
-                    </div>
-                    <div className="form-item">
-                      <input
-                        type="password"
-                        value={userpass}
-                        placeholder="enter the password"
-                        onChange={(e) => setpass(e.target.value)}
-                      />
-                    </div>
-                    <button className="btn-gradient">Login</button>
+        <div className="form-main">
+          <Row>
+            {loading ? (
+              <div className="d-flex align-items-center justify-content-center vh-100 vw-100">
+                <Loader />
+              </div>
+            ) : (
+              <>
+                <Col
+                  lg={7}
+                  className="d-flex justify-content-center align-items-center"
+              style={{background:"#fafafa"}}
+                >
+                  <div className="left-side">
+                    <img
+                      src={
+                        "https://img.freepik.com/free-vector/businessman-businesswoman-looking-computer-monitor_1262-21450.jpg"
+                      }
+                      alt="login image  "
+                    />
+                  </div>
+                </Col>
+                <Col lg={5} className="right-side">
+                  <div className="from-group">
+                    <form onSubmit={handleSubmit}>
+                      <div className="form-item">
+                        <input
+                          type="text"
+                          value={useLog}
+                          placeholder="enter the Email"
+                          onChange={(e) => setlog(e.target.value)}
+                        />
+                      </div>
+                      <div className="form-item">
+                        <input
+                          type="password"
+                          value={userpass}
+                          placeholder="enter the password"
+                          onChange={(e) => setpass(e.target.value)}
+                        />
+                      </div>
+                      <button className="btn-gradient">Login</button>
 
-                    <h5 className="footer_text">
-                      Don't have an account?{" "}
-                      <Link to="/register">Register</Link>
-                    </h5>
-                  </form>
-                </div>
-              </Col>
-            </>
-          )}
-        </Row>
+                      <h5 className="footer_text">
+                        Don't have an account?{" "}
+                        <Link to="/register">Register</Link>
+                      </h5>
+                    </form>
+                  </div>
+                </Col>
+              </>
+            )}
+          </Row>
+        </div>
       </Container>
     </>
   );
