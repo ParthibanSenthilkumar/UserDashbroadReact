@@ -4,7 +4,7 @@ import axios from "axios";
 
 const BASEURL = "https://usermangement-19026-default-rtdb.firebaseio.com/";
 
-// ✅ REGISTER
+// REGISTER
 export const getPost = async (data) => {
   try {
     await fetch(`${BASEURL}useregister.json`, {
@@ -20,7 +20,6 @@ export const getPost = async (data) => {
   }
 };
 
-
 export const getLogPost = async (logData) => {
   try {
     const res = await fetch(`${BASEURL}UserLogin.json`, {
@@ -34,7 +33,6 @@ export const getLogPost = async (logData) => {
 
     localStorage.setItem("loginId", data.name);
     return data.name;
-
   } catch (error) {
     errorToast(error.message);
     throw error;
@@ -124,11 +122,11 @@ export const createAttendance = async (data) => {
 //  UPDATE ATTENDANCE
 export const updateAttendance = async (data, attendanceId) => {
   try {
-    const loginId = localStorage.getItem("loginId"); 
+    const loginId = localStorage.getItem("loginId");
     if (!loginId) throw new Error("Login ID missing");
     const res = await axios.patch(
       `${BASEURL}UserLogin/${loginId}/attendance/${attendanceId}.json`,
-      data
+      data,
     );
     return res.data;
   } catch (error) {
@@ -137,26 +135,26 @@ export const updateAttendance = async (data, attendanceId) => {
   }
 };
 
-
 // user Attandance  get requset
 
-export const AttandanceData= async ()=>{
-try{
-  const loginId = localStorage.getItem("loginId");
-  let res =await axios.get(`${BASEURL}UserLogin/${loginId}/attendance.json`)
-  let responseData=res.data
-  let resarr=[]
-  for( let key in responseData ){
-    resarr.push({
-      id:key,
-      ...responseData[key]
-    })
+export const AttandanceData = async () => {
+  try {
+    let res = await axios.get(`${BASEURL}UserLogin.json`);
+    let responseData = res.data;
+
+    const attendanceData = Object.values(responseData).flatMap((user) => {
+      if (!user.attendance) return [];
+
+      return Object.keys(user.attendance).map((key) => ({
+        id: key,
+        ...user.attendance[key],
+        user: user.useLog,
+        uid: user.uid,
+      }));
+    });
+
+    return attendanceData;
+  } catch (error) {
+    errorToast(error.message);
   }
-  return resarr
-}
-catch(error){
-  errorToast(error.message)
-}
-}
-
-
+};
