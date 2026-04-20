@@ -397,3 +397,10 @@ table tr {
   font-weight: 400;
   color: #726b6b;
 }
+.btn-filter{
+    font-size: 16px;
+    font-weight: 500;
+    color: #393939;
+    background: #e9eaff;
+    padding: 8px 25px;
+}

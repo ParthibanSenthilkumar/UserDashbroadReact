@@ -137,24 +137,28 @@ export const updateAttendance = async (data, attendanceId) => {
 
 // user Attandance  get requset
 
+
+
+
 export const AttandanceData = async () => {
   try {
     let res = await axios.get(`${BASEURL}UserLogin.json`);
     let responseData = res.data;
-
-    const attendanceData = Object.values(responseData).flatMap((user) => {
-      if (!user.attendance) return [];
-
-      return Object.keys(user.attendance).map((key) => ({
-        id: key,
+      
+   const attendanceData=Object.values(responseData).flatMap((user)=>{
+    if(!user.attendance) return [];   
+      return Object.keys(user.attendance).map((key)=>({
+        id:key,
         ...user.attendance[key],
-        user: user.useLog,
-        uid: user.uid,
-      }));
-    });
-
+      }))
+    })
     return attendanceData;
+    console.log(attendanceData,"attendanceData");
+    
   } catch (error) {
     errorToast(error.message);
+    console.log(error.message);
+    
+     return [];
   }
 };

@@ -14,6 +14,7 @@ const Dashboard = () => {
 
   // states
   const [attendanceSearch, setattendanceSearch] = useState("");
+  const [userSearch,setuserSearch]=useState("")
   const [selectedDate, setSelectedDate] = useState(
     new Date().toLocaleDateString("en-CA"),
   );
@@ -32,6 +33,11 @@ const Dashboard = () => {
     window.open(`https://www.google.com/maps?q=${lat},${lng}`);
   };
 
+  const filterUser=userdata.filter((item)=>{
+    let name=item?.user.toLowerCase()|| ''
+    return name.includes(userSearch.toLowerCase());
+  })
+
   // loading
   if (loading || attendanceloading) {
     return (
@@ -45,7 +51,8 @@ const Dashboard = () => {
     return errorToast(error.message);
   }
 
-  // 🔥 filter logic
+
+  //  filter 
   const filterattendance = (attendance || []).filter((item) => {
     if (!item.loginTime) return false;
 
@@ -56,20 +63,19 @@ const Dashboard = () => {
     const userName = item.user?.toLowerCase() || "";
     const isSearchMatch = userName.includes(attendanceSearch.toLowerCase());
 
-    if (filterType === "all") {
+   switch(filterType){
+      case "all":
       return isSearchMatch;
+      case "today":
+        return itemDate === today && isSearchMatch
+      case "date":
+        return itemDate === selectedDate && isSearchMatch
+      default:
+        return true;
     }
-
-    if (filterType === "today") {
-      return itemDate === today && isSearchMatch;
-    }
-
-    if (filterType === "date") {
-      return itemDate === selectedDate && isSearchMatch;
-    }
-
-    return true;
   });
+  
+
 
   return (
     <>
@@ -82,8 +88,26 @@ const Dashboard = () => {
 
         <div className="dash-cart">
           <h3>Total Login</h3>
-          <span>{attendance.length}</span>
+          <span>{attendance.length || 0}</span>
         </div>
+        <div className="dash-cart">
+          <h3>Total Login</h3>
+          <span>{attendance.length || 0}</span>
+        </div>
+        <div className="dash-cart">
+          <h3>Today Login</h3>
+          <span>5</span>
+        </div>
+      </div>
+
+      {/* SEARCH */}
+      <div className="mb-2 form-item">
+        <input
+          type="text"
+          placeholder="Search by Name..."
+          value={userSearch}
+          onChange={(e) => setuserSearch(e.target.value)}
+        />
       </div>
 
       {/* USER TABLE */}
@@ -99,8 +123,8 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {userdata.length > 0 ? (
-              userdata.map((userData) => (
+            {filterUser.length > 0 ? (
+              filterUser.map((userData) => (
                 <tr key={userData.id} onClick={() => handleShow(userData)}>
                   <td>{userData.user || "---"}</td>
                   <td>{userData.useremail || "--"}</td>
@@ -125,51 +149,32 @@ const Dashboard = () => {
       />
 
       {/* FILTER SECTION */}
-      <div className="d-flex gap-2 mb-2">
-        <button onClick={() => setFilterType("all")}>All</button>
-
+      <div className="d-flex gap-2 mb-2 mt-5">
+        <button onClick={() => setFilterType("all")} className="btn btn-filter">All</button>
         <button
           onClick={() => {
             setFilterType("today");
             setSelectedDate(new Date().toLocaleDateString("en-CA"));
           }}
+          className="btn btn-filter"
         >
           Today
         </button>
 
-        <button onClick={() => setFilterType("date")}>Date Wise</button>
-      </div>
-
-      {/* SEARCH */}
-      <div className="mb-2">
-        <input
-          type="text"
-          placeholder="Search by email..."
-          value={attendanceSearch}
-          onChange={(e) => setattendanceSearch(e.target.value)}
-        />
+        <button onClick={() => setFilterType("date")} className="btn btn-filter">Date Wise</button>
       </div>
 
       {/* DATE PICKER */}
       {filterType === "date" && (
-        <div className="mb-2">
+        <div className="form-item mb-2">
           <input
             type="date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
+            style={{width:"27%",margin:"10px"}}
           />
         </div>
       )}
-
-      {/* TITLE */}
-      <h5>
-        {filterType === "all"
-          ? "All Attendance"
-          : filterType === "today"
-            ? "Today Attendance"
-            : `Date: ${selectedDate}`}
-      </h5>
-
       {/* ATTENDANCE TABLE */}
       <div className="user-table">
         <table className="table table-borderless text-center">
@@ -229,7 +234,7 @@ const Dashboard = () => {
                     View Location
                   </td>
                 </tr>
-              ))
+              ))                  
             ) : (
               <tr>
                 <td colSpan={5}>No Attendance Found</td>

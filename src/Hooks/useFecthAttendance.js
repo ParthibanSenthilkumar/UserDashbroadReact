@@ -14,10 +14,11 @@ const useFecthAttendance = (apiFunc) => {
     try{
       setattendanceloading(true)
       let res = await apiFunc();
-      setattendance(res)
+      setattendance(res ||[])   
     }
     catch(error){
       errorToast(error.message)
+      return []
     }
     finally{
       setattendanceloading(false)
