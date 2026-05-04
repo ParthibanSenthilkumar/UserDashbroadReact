@@ -103,6 +103,7 @@ const handleSave = async () => {
     const currentTime = new Date();
 
     const attendanceData = {
+      userId: user.uid,
       latitude: position?.[0],
       longitude: position?.[1],
       loginTime: currentTime.toISOString(),

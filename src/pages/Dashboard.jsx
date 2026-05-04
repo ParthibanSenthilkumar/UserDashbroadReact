@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import useFecth from "../Hooks/useFecth";
 import Loader from "../Components/Loader";
 import { errorToast } from "../Components/Toaster";
@@ -12,9 +12,14 @@ const Dashboard = () => {
   let { attendance, attendanceloading, attendancerror } =
     useFecthAttendance(AttandanceData);
 
+    console.log(attendance,"AttandanceData");
+    console.log(AttandanceData,"AttandanceData");
+    
+  //context
+
   // states
   const [attendanceSearch, setattendanceSearch] = useState("");
-  const [userSearch,setuserSearch]=useState("")
+  const [userSearch, setuserSearch] = useState("");
   const [selectedDate, setSelectedDate] = useState(
     new Date().toLocaleDateString("en-CA"),
   );
@@ -33,10 +38,10 @@ const Dashboard = () => {
     window.open(`https://www.google.com/maps?q=${lat},${lng}`);
   };
 
-  const filterUser=userdata.filter((item)=>{
-    let name=item?.user.toLowerCase()|| ''
+  const filterUser = userdata.filter((item) => {
+    let name = item?.user.toLowerCase() || "";
     return name.includes(userSearch.toLowerCase());
-  })
+  });
 
   // loading
   if (loading || attendanceloading) {
@@ -51,8 +56,12 @@ const Dashboard = () => {
     return errorToast(error.message);
   }
 
+const getUserDetails = (userId) => {
+  return userdata.find((u) => u.uid === userId);
+};
 
-  //  filter 
+
+  //  filter
   const filterattendance = (attendance || []).filter((item) => {
     if (!item.loginTime) return false;
 
@@ -63,19 +72,17 @@ const Dashboard = () => {
     const userName = item.user?.toLowerCase() || "";
     const isSearchMatch = userName.includes(attendanceSearch.toLowerCase());
 
-   switch(filterType){
+    switch (filterType) {
       case "all":
-      return isSearchMatch;
+        return isSearchMatch;
       case "today":
-        return itemDate === today && isSearchMatch
+        return itemDate === today && isSearchMatch;
       case "date":
-        return itemDate === selectedDate && isSearchMatch
+        return itemDate === selectedDate && isSearchMatch;
       default:
         return true;
     }
   });
-  
-
 
   return (
     <>
@@ -150,7 +157,9 @@ const Dashboard = () => {
 
       {/* FILTER SECTION */}
       <div className="d-flex gap-2 mb-2 mt-5">
-        <button onClick={() => setFilterType("all")} className="btn btn-filter">All</button>
+        <button onClick={() => setFilterType("all")} className="btn btn-filter">
+          All
+        </button>
         <button
           onClick={() => {
             setFilterType("today");
@@ -161,7 +170,12 @@ const Dashboard = () => {
           Today
         </button>
 
-        <button onClick={() => setFilterType("date")} className="btn btn-filter">Date Wise</button>
+        <button
+          onClick={() => setFilterType("date")}
+          className="btn btn-filter"
+        >
+          Date Wise
+        </button>
       </div>
 
       {/* DATE PICKER */}
@@ -171,7 +185,7 @@ const Dashboard = () => {
             type="date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-            style={{width:"27%",margin:"10px"}}
+            style={{ width: "27%", margin: "10px" }}
           />
         </div>
       )}
@@ -181,6 +195,8 @@ const Dashboard = () => {
           <thead>
             <tr>
               <th>Image</th>
+              <th>Username</th>
+              <th>Email</th>
               <th>Login Time</th>
               <th>Logout Time</th>
               <th>Working Hours</th>
@@ -188,59 +204,67 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {filterattendance.length > 0 ? (
-              filterattendance.map((attendanceData) => (
-                <tr key={attendanceData.id}>
-                  <td>
-                    {attendanceData.image ? (
-                      <img
-                        src={attendanceData.image}
-                        width="50"
-                        height="50"
-                        style={{
-                          borderRadius: "50%",
-                          objectFit: "cover",
-                        }}
-                        alt="user"
-                      />
-                    ) : (
-                      "---"
-                    )}
-                  </td>
+  {Array.isArray(filterattendance) && filterattendance.length > 0 ? (
+    filterattendance.map((attendanceData) => {
+      const userDetails = getUserDetails(attendanceData.userId);
 
-                  <td>
-                    {attendanceData.loginTime
-                      ? new Date(attendanceData.loginTime).toLocaleString()
-                      : "--"}
-                  </td>
+      return (
+        <tr key={attendanceData.id}>
 
-                  <td>
-                    {attendanceData.logoutTime
-                      ? new Date(attendanceData.logoutTime).toLocaleString()
-                      : "--"}
-                  </td>
-
-                  <td>{attendanceData.workingHours || "--"}</td>
-
-                  <td
-                    style={{ cursor: "pointer" }}
-                    onClick={() =>
-                      handleOpenmap(
-                        attendanceData.latitude,
-                        attendanceData.longitude,
-                      )
-                    }
-                  >
-                    View Location
-                  </td>
-                </tr>
-              ))                  
+          <td>
+            {attendanceData.image ? (
+              <img
+                src={attendanceData.image}
+                width="50"
+                height="50"
+                style={{
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                }}
+                alt="user"
+              />
             ) : (
-              <tr>
-                <td colSpan={5}>No Attendance Found</td>
-              </tr>
+              "---"
             )}
-          </tbody>
+          </td>
+         <td>{userDetails?.user || "--"}</td>
+          <td>{userDetails?.useremail || "--"}</td>
+          <td>
+            {attendanceData.loginTime
+              ? new Date(attendanceData.loginTime).toLocaleString()
+              : "--"}
+          </td>
+
+          <td>
+            {attendanceData.logoutTime
+              ? new Date(attendanceData.logoutTime).toLocaleString()
+              : "--"}
+          </td>
+
+          <td>{attendanceData.workingHours || "--"}</td>
+
+          <td
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              handleOpenmap(
+                attendanceData.latitude,
+                attendanceData.longitude
+              )
+            }
+          >
+            View Location
+          </td>
+        </tr>
+      );
+    })
+  ) : (
+    <tr>
+      <td colSpan={7} style={{ textAlign: "center" }}>
+        No Attendance Found
+      </td>
+    </tr>
+  )}
+</tbody>
         </table>
       </div>
     </>

@@ -6,6 +6,7 @@ import Dashboard from "../pages/Dashboard";
 import Sidebar from "../Components/Sidebar";
 import Profile from "../pages/Profile";
 import Attenance from "../pages/Attenance";
+import { Logout } from "../pages/Logout";
 
 const Allroutes = () => {
   return (
@@ -19,7 +20,7 @@ const Allroutes = () => {
           <Route path="admin" element={<Dashboard />} />
           <Route path="profile" element={<Profile />} />
           <Route path="attenance" element={<Attenance />} />
-          <Route path="logout" element={<h2>Logout Page</h2>} />
+          <Route path="logout" element={<Logout /> } />
         </Route>
       </Routes>
     </>

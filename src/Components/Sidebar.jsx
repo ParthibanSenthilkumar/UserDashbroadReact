@@ -1,55 +1,50 @@
-import React from 'react'
-import {  Link, Outlet } from 'react-router-dom'
-import { Nav } from 'react-bootstrap'
+import React from "react";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Nav } from "react-bootstrap";
+import { signOut } from "firebase/auth";
+import { auth } from "../Services/firebase";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.clear();
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <>
     <div className="wrapper d-flex align-items-stretch">
-    <div className="sidebar">
+      <div className="sidebar">
         <ul>
-            <li>
-              <div className="user-logo">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                  alt="logo"
-                />
-              </div>
-            </li>
-            <li className="nav-links">
-              <Nav.Link as={Link} to='admin'>
-                <i className="fa-solid fa-user-gear"></i> Admin
-              </Nav.Link>
-            </li>
-            <li className="nav-links">
-              <Nav.Link as={Link} to="profile">
-                <i className="fa-solid fa-user-gear"></i> Profile
-              </Nav.Link>
-            </li>
-            <li className="nav-links">
-              <Nav.Link as={Link} to="attenance">
-                <i className="fa-solid fa-user-gear"></i> Attenance
-              </Nav.Link>
-            </li>
-            <li className="nav-links">
-              <Nav.Link as={Link} to="logout">
-                <i className="fa-solid fa-user-gear"></i> Logout
-              </Nav.Link>
-            </li>
+          <li className="nav-links">
+            <Nav.Link as={Link} to="admin">Admin</Nav.Link>
+          </li>
+
+          <li className="nav-links">
+            <Nav.Link as={Link} to="profile">Profile</Nav.Link>
+          </li>
+
+          <li className="nav-links">
+            <Nav.Link as={Link} to="attenance">Attenance</Nav.Link>
+          </li>
+
+          
+          <li className="nav-links">
+            <button onClick={handleLogout}>Logout</button>
+          </li>
         </ul>
-    </div>
-        <div className="main">
-          <div className="topbar">
-            <h2>Dashboard</h2>
-          </div>
-          <div className="main-content">
-            <Outlet />
-            {/* child components rendering like eg: user.jsx,admin.jsx */}
-          </div>
-        </div>
       </div>
-    </>
-  )
-}  
+
+      <div className="main">
+        <Outlet />
+      </div>
+    </div>
+  );
+};
 
 export default Sidebar;

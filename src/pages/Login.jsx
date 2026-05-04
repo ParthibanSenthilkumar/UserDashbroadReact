@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+﻿import React, { useContext, useState } from "react";
 import { auth } from "../Services/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Link } from "react-router-dom";
@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { errorToast, successToast } from "../Components/Toaster";
 import Loader from "../Components/Loader";
 import { Container, Col, Row } from "react-bootstrap";
-import { getLogPost } from "../Services/Api";
+import { getLogPost, loginDataFetch } from "../Services/Api";
+import { Usercontext } from "../Context/Usercreatecontext";
 
 const Login = () => {
   let [useLog, setlog] = useState("");
@@ -14,6 +15,7 @@ const Login = () => {
   let [userpass, setpass] = useState("");
 
   let navigate = useNavigate();
+  const { setuserdetails } = useContext(Usercontext);
 
   let handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,6 +33,11 @@ const Login = () => {
           email: user.email,
         }),
       );
+
+      let Alluserdetails = await loginDataFetch(user.uid);
+      setuserdetails(Alluserdetails);
+      localStorage.setItem("userdetails", JSON.stringify(Alluserdetails));
+
       let formdata = {
         useLog,
         userpass,
@@ -67,7 +74,7 @@ const Login = () => {
                 <Col
                   lg={7}
                   className="d-flex justify-content-center align-items-center"
-              style={{background:"#fafafa"}}
+                  style={{ background: "#fafafa" }}
                 >
                   <div className="left-side">
                     <img
