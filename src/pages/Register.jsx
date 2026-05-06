@@ -205,7 +205,7 @@ const Register = () => {
 
                       <Col lg={6}>
                         <div className="form-item">
-                          <label>Skills:</label>
+                          <label htmlFor="Skills">Skills:</label>
                           <span>
                             <input
                               type="checkbox"
@@ -229,7 +229,7 @@ const Register = () => {
 
                       <Col lg={6}>
                         <div className="form-item">
-                          <label>Gender:</label>
+                          <label htmlFor="Gender">Gender:</label>
                           <span>
                             <input
                               type="radio"
@@ -267,7 +267,7 @@ const Register = () => {
                           />
                         </div>
                       </Col>
-
+                    
                       <button type="submit" className="btn-gradient">
                         Register
                       </button>

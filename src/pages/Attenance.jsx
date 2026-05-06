@@ -93,6 +93,10 @@ const Attenance = () => {
   };
 
   // SAVE (after capture)
+ let storedUser = localStorage.getItem("user"); 
+let userObj = JSON.parse(storedUser);          
+let userId = userObj?.uid; 
+
 const handleSave = async () => {
   try {
     if (localStorage.getItem("currentAttendanceId")) {
@@ -103,7 +107,7 @@ const handleSave = async () => {
     const currentTime = new Date();
 
     const attendanceData = {
-      userId: user.uid,
+      userId: userId,
       latitude: position?.[0],
       longitude: position?.[1],
       loginTime: currentTime.toISOString(),

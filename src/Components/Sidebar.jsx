@@ -33,16 +33,21 @@ const Sidebar = () => {
             <Nav.Link as={Link} to="attenance">Attenance</Nav.Link>
           </li>
 
-          
           <li className="nav-links">
-            <button onClick={handleLogout}>Logout</button>
+            <button className="nav-link" style={{ width:"176px", textAlign:"start"}} onClick={handleLogout}>Logout</button>
           </li>
         </ul>
       </div>
 
-      <div className="main">
-        <Outlet />
-      </div>
+        <div className="main">
+          <div className="topbar">
+            <h2>Dashboard</h2>
+          </div>
+          <div className="main-content">
+            <Outlet />{" "}
+            {/* child components rendering like eg: user.jsx,admin.jsx */}
+          </div>
+        </div>
     </div>
   );
 };

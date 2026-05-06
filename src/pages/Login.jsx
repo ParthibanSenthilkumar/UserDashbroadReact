@@ -33,7 +33,7 @@ const Login = () => {
           email: user.email,
         }),
       );
-
+      
       let Alluserdetails = await loginDataFetch(user.uid);
       setuserdetails(Alluserdetails);
       localStorage.setItem("userdetails", JSON.stringify(Alluserdetails));

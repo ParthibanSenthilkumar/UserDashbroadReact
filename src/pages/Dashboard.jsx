@@ -13,7 +13,6 @@ const Dashboard = () => {
     useFecthAttendance(AttandanceData);
 
     console.log(attendance,"AttandanceData");
-    console.log(AttandanceData,"AttandanceData");
     
   //context
 
