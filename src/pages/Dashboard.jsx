@@ -81,6 +81,11 @@ const Dashboard = () => {
         return true;
     }
   });
+  
+  const handleRole=(Role)=>{
+
+  }
+
 
 
   return (
@@ -112,7 +117,7 @@ const Dashboard = () => {
         <div className="search_part">
           <h3 className="title"><i className="fa-regular fa-user"></i> All User</h3>
           <div className="search_box mb-2 form-item ">
-            <i class="fa-solid fa-magnifying-glass"></i>
+            <i className="fa-solid fa-magnifying-glass"></i>
             <input
               type="text"
               placeholder="Search by Name..."
@@ -127,6 +132,7 @@ const Dashboard = () => {
               <th>Profile</th>
               <th>Name</th>
               <th>Email</th>
+              <th>Role</th>
               <th>Age</th>
               <th>Phone</th>
               <th>Region</th>
@@ -143,6 +149,11 @@ const Dashboard = () => {
                         <td> <span className="user_profile">{profile}</span> </td>
                         <td>{userData.user || "---"}</td>
                         <td>{userData.useremail || "--"}</td>
+                        <td><select value={Role}  onChange={(e)=>handleRole(userData.id,e.target.value)}>
+                          <option value="User">User</option>
+                          <option value="Admin">Admin</option>
+                          <option value="Manger">Manger</option>
+                          </select> </td>
                         <td>{userData.userAge || "--"}</td>
                         <td>{userData.phoneNo || "--"}</td>
                         <td>
@@ -258,7 +269,7 @@ const Dashboard = () => {
                         : "--"}
                     </td>
 
-                    <td> <span class="badge">{attendanceData.workingHours || "--"}</span></td>
+                    <td> <span className="badge">{attendanceData.workingHours || "--"}</span></td>
 
                     <td style={{ cursor: "pointer" }}>
                      <span  className="Location" onClick={() =>
@@ -266,7 +277,7 @@ const Dashboard = () => {
                           attendanceData.latitude,
                           attendanceData.longitude,
                         )
-                      }> <i class="fa-solid fa-map-pin"></i>View </span>   
+                      }> <i className="fa-solid fa-map-pin"></i>View </span>   
                     </td>
                   </tr>
                 );

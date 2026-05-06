@@ -4,6 +4,7 @@ import { errorToast } from "../Components/Toaster";
 import Card from 'react-bootstrap/Card';
 import Loader from '../Components/Loader'
 import { Usercontext } from "../Context/Usercreatecontext";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
 
@@ -32,40 +33,57 @@ const Profile = () => {
   }, []);
 
   return (
-<div className="profile-page d-flex justify-content-center align-items-center">
+<div className="profile-page">
   {userData ? (
     <div className="profile-wrapper">
-
-      {/* 🔹 BOX 1 - Profile Header */}
-      <div className="profile-box text-center">
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-          alt="profile"
-          className="profile-img"
-        />
-        <h3>{userdetails?.user}</h3>
-        <p className="text-muted">{userdetails?.useremail}</p>
-      </div>
-
-      {/* 🔹 BOX 2 - Details */}
-      <div className="details-box">
-        <p><strong>Region:</strong> {userdetails?.region}</p>
-        <p><strong>Phone:</strong> {userdetails?.phoneNo}</p>
-        <p><strong>Gender:</strong> {userdetails?.useradio}</p>
-        <p><strong>Age:</strong> {userdetails?.userAge}</p>
-
-        <div className="skills-section">
-          <h5>Skills</h5>
-          <div className="skills-list">
-            {userdetails?.skils?.map((skill, index) => (
-              <span key={index} className="skill-badge">
-                {skill}
-              </span>
-            ))}
+      <div className="row">
+        <div className="col-lg-6">
+          <div className="profile-box text-center">
+            <h3>{userdetails?.user}</h3>
+            <p className="text-muted">{userdetails?.useremail}</p>
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+              alt="profile"
+              className="profile-img"
+            />
+            <div className="info_details d-flex align-items-center justify-content-evenly mt-5">
+              <Link to="/attendance" className="btn-gradient" ><i className="fa-solid fa-arrow-right-to-bracket"></i> Attendance</Link>
+              <Link to='#' className="btn-gradient"> <i className="fa-solid fa-share"></i> Share Now</Link>
+            </div>
           </div>
         </div>
-      </div>
+        <div className="col-lg-6">
+            {/*  BOX 2 - Details */}
+            <div className="details-box">
+              <h3>Personal Details</h3>
+            <div className="d-flex align-items-center justify-content-between gap-3">
+              <div className="details_item">
+                <p><strong>Region:</strong> <span>{userdetails?.region}</span> </p>
+                <p><strong>Phone:</strong> <span>{userdetails?.phoneNo}</span> </p>
+              </div>
+              <div className="details_item">
+                <p><strong>Gender:</strong> <span>{userdetails?.useradio}</span> </p>
+                <p><strong>Age:</strong> <span>{userdetails?.userAge}</span> </p>
+              </div>
+            </div>
+            </div>
+            <div className="details-box mt-3  ">
+              <h3>Skills</h3>
+              {userdetails?.skils?.map((skills)=>
+              <span className="skills_badge" >{skills || "No Skills Added" }</span>
+              )}
+            </div>
 
+        </div>
+      </div>
+      <div className="details-box social_icons">
+        <h3>Follow Us</h3>
+        <div className="d-flex align-items-center gap-3 mt-2">
+          <span><i className="fa-brands fa-linkedin-in"></i></span> 
+          <span><i className="fa-solid fa-paper-plane"></i></span> 
+          <span><i className="fa-brands fa-facebook-f"></i></span>
+        </div>
+      </div>
     </div>
   ) : (
     <div className="d-flex align-items-center justify-content-center vh-100 vw-100">
@@ -76,7 +94,6 @@ const Profile = () => {
 );
 }
 export default Profile;
-
 
           //  <Card className="Profile_card">
           //   <Card.Img variant="top" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" />

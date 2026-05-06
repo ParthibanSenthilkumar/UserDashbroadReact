@@ -508,12 +508,6 @@ table tr {
     border-radius: 50%;
     background: linear-gradient(#e9eaff, #e9eaff) padding-box, linear-gradient(135deg, #667eea, #764ba2) border-box;
 }
-
-.profile-wrapper {
-  width: 350px;
-}
-
-
 .profile-box {
   background: white;
   padding: 20px;
@@ -521,7 +515,15 @@ table tr {
   margin-bottom: 15px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
-
+.details_item{
+    width: 100%;
+}
+.details_item span{
+    display: block;
+    margin-top: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
 
 .details-box {
   background: white;
@@ -531,22 +533,32 @@ table tr {
 }
 
 .profile-img {
-  width: 80px;
-  height: 80px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
   margin-bottom: 10px;
 }
-
-
-.skills-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+.skills_badge{
+    font-size: 20px;
+    font-weight: 500;
+    margin: 10px 20px;
+    background: linear-gradient(#e9eaff, #e9eaff) padding-box, linear-gradient(135deg, #667eea, #764ba2) border-box;
+    border: 2px solid transparent;
+    max-width: 99px;
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    border-radius: 50px;
 }
 
-.skill-badge {
-  background: #e9eaff;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 12px;
+.social_icons span{
+  background: var(--gradient-color);
+  height:45px;
+  width: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  gap: 20px;
+  color: #fff;
 }

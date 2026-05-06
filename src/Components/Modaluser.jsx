@@ -6,8 +6,6 @@ import { Row, Col } from "react-bootstrap";
 import { delRequest, getPatch } from "../Services/Api";
 import { successToast } from "./Toaster";
 
-
-
 const Modaluser = ({ show, handleClose, currentRow }) => {
     console.log(currentRow, "test");
 
