@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Nav } from "react-bootstrap";
 import { signOut } from "firebase/auth";
 import { auth } from "../Services/firebase";
 
+const formatTime = (date) => {
+  return date.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+};
+
+const handleTime = () => {
+  return formatTime(new Date());
+};
+
 const Sidebar = () => {
+  const [Time, setTime] = useState(handleTime());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(handleTime());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -17,37 +39,65 @@ const Sidebar = () => {
     }
   };
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userEmail = user?.email;
+  const userName = userEmail.split("@")[0] || "user";
+
   return (
     <div className="wrapper d-flex align-items-stretch">
       <div className="sidebar">
+        <h2 className="h6 text-center pt-2">User Dashbroad</h2>
+        <div className="side_user_details">
+          <h2>{userName}</h2>
+          <p>Welcome to our dashboard</p>
+        </div>
         <ul>
           <li className="nav-links">
-            <Nav.Link as={Link} to="admin">Admin</Nav.Link>
+            <Nav.Link as={Link} to="admin">
+              Admin
+            </Nav.Link>
           </li>
 
           <li className="nav-links">
-            <Nav.Link as={Link} to="profile">Profile</Nav.Link>
+            <Nav.Link as={Link} to="profile">
+              Profile
+            </Nav.Link>
           </li>
 
           <li className="nav-links">
-            <Nav.Link as={Link} to="attenance">Attenance</Nav.Link>
+            <Nav.Link as={Link} to="attenance">
+              Attenance
+            </Nav.Link>
           </li>
 
           <li className="nav-links">
-            <button className="nav-link" style={{ width:"176px", textAlign:"start"}} onClick={handleLogout}>Logout</button>
+            <button
+              className="nav-link"
+              style={{ width: "176px", textAlign: "start" }}
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
           </li>
         </ul>
       </div>
 
-        <div className="main">
-          <div className="topbar">
+      <div className="main">
+        <div className="topbar">
+          <div className="top_content">
             <h2>Dashboard</h2>
+            <span className="live_clock">
+              <i class="fa-regular fa-clock"></i>
+              {Time}
+            </span>
           </div>
-          <div className="main-content">
-            <Outlet />{" "}
-            {/* child components rendering like eg: user.jsx,admin.jsx */}
-          </div>
+          
         </div>
+        <div className="main-content">
+          <Outlet />{" "}
+          {/* child components rendering like eg: user.jsx,admin.jsx */}
+        </div>
+      </div>
     </div>
   );
 };

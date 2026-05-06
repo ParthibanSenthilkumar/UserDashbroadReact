@@ -166,7 +166,7 @@ const handleLogout = async () => {
     localStorage.setItem("logoutTime", currentTime.toISOString());
     localStorage.setItem("workingHours", workString);
     // clear ONLY current session
-    localStorage.removeItem("currentAttendanceId");
+  localStorage.removeItem("currentAttendanceId");
 
 
   } catch (err) {

@@ -12,8 +12,8 @@ const Dashboard = () => {
   let { attendance, attendanceloading, attendancerror } =
     useFecthAttendance(AttandanceData);
 
-    console.log(attendance,"AttandanceData");
-    
+  console.log(attendance, "AttandanceData");
+
   //context
 
   // states
@@ -55,10 +55,9 @@ const Dashboard = () => {
     return errorToast(error.message);
   }
 
-const getUserDetails = (userId) => {
-  return userdata.find((u) => u.uid === userId);
-};
-
+  const getUserDetails = (userId) => {
+    return userdata.find((u) => u.uid === userId);
+  };
 
   //  filter
   const filterattendance = (attendance || []).filter((item) => {
@@ -83,6 +82,7 @@ const getUserDetails = (userId) => {
     }
   });
 
+
   return (
     <>
       {/* DASHBOARD CARDS */}
@@ -106,45 +106,63 @@ const getUserDetails = (userId) => {
         </div>
       </div>
 
-      {/* SEARCH */}
-      <div className="mb-2 form-item">
-        <input
-          type="text"
-          placeholder="Search by Name..."
-          value={userSearch}
-          onChange={(e) => setuserSearch(e.target.value)}
-        />
-      </div>
-
       {/* USER TABLE */}
       <div className="user-table">
+        {/* SEARCH */}
+        <div className="search_part">
+          <h3 className="title"><i className="fa-regular fa-user"></i> All User</h3>
+          <div className="search_box mb-2 form-item ">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              placeholder="Search by Name..."
+              value={userSearch}
+              onChange={(e) => setuserSearch(e.target.value)}
+            />
+          </div>
+        </div>
         <table className="table table-borderless text-center">
           <thead>
             <tr>
+              <th>Profile</th>
               <th>Name</th>
               <th>Email</th>
               <th>Age</th>
               <th>Phone</th>
               <th>Region</th>
+              <th>Action</th>
             </tr>
           </thead>
-          <tbody>
-            {filterUser.length > 0 ? (
-              filterUser.map((userData) => (
-                <tr key={userData.id} onClick={() => handleShow(userData)}>
-                  <td>{userData.user || "---"}</td>
-                  <td>{userData.useremail || "--"}</td>
-                  <td>{userData.userAge || "--"}</td>
-                  <td>{userData.phoneNo || "--"}</td>
-                  <td>{userData.region || "--"}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={5}>User Not found</td>
-              </tr>
-            )}
-          </tbody>
+              <tbody>
+                {filterUser.length > 0 ? (
+                  filterUser.map((userData) => {
+                    let profile = userData?.user?.slice(0, 2)?.toUpperCase() || "--";
+
+                    return (
+                      <tr key={userData.id} onClick={() => handleShow(userData)}>
+                        <td> <span className="user_profile">{profile}</span> </td>
+                        <td>{userData.user || "---"}</td>
+                        <td>{userData.useremail || "--"}</td>
+                        <td>{userData.userAge || "--"}</td>
+                        <td>{userData.phoneNo || "--"}</td>
+                        <td>
+                          <span className="badge">{userData.region || "--"}</span>
+                        </td>
+                        <td>
+                          <i
+                            className="fa-solid fa-pen-to-square"
+                            onClick={() => handleShow(userData)}
+                          ></i>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan={5}>User Not found</td>
+                  </tr>
+                )}
+              </tbody>
         </table>
       </div>
 
@@ -154,42 +172,46 @@ const getUserDetails = (userId) => {
         currentRow={currentRow}
       />
 
-      {/* FILTER SECTION */}
-      <div className="d-flex gap-2 mb-2 mt-5">
-        <button onClick={() => setFilterType("all")} className="btn btn-filter">
-          All
-        </button>
-        <button
-          onClick={() => {
-            setFilterType("today");
-            setSelectedDate(new Date().toLocaleDateString("en-CA"));
-          }}
-          className="btn btn-filter"
-        >
-          Today
-        </button>
-
-        <button
-          onClick={() => setFilterType("date")}
-          className="btn btn-filter"
-        >
-          Date Wise
-        </button>
-      </div>
-
-      {/* DATE PICKER */}
-      {filterType === "date" && (
-        <div className="form-item mb-2">
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
-            style={{ width: "27%", margin: "10px" }}
-          />
-        </div>
-      )}
+      
       {/* ATTENDANCE TABLE */}
-      <div className="user-table">
+      <div className="user-table mt-5">
+        <div className="search_part">
+          <h3 className="title"><i className="fa-regular fa-user"></i>  Login Activity </h3>
+          {/* FILTER SECTION */}
+          <div className="d-flex gap-2 mb-2">
+            <button onClick={() => setFilterType("all")} className="btn btn-filter">
+              All
+            </button>
+            <button
+              onClick={() => {
+                setFilterType("today");
+                setSelectedDate(new Date().toLocaleDateString("en-CA"));
+              }}
+              className="btn btn-filter"
+            >
+              Today
+            </button>
+
+            <button
+              onClick={() => setFilterType("date")}
+              className="btn btn-filter"
+            >
+              Date Wise
+            </button>
+          </div>
+
+          {/* DATE PICKER */}
+          {filterType === "date" && (
+            <div className="form-item mb-2">
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                style={{ width: "27%", margin: "10px" }}
+              />
+            </div>
+          )}
+        </div>
         <table className="table table-borderless text-center">
           <thead>
             <tr>
@@ -203,67 +225,60 @@ const getUserDetails = (userId) => {
             </tr>
           </thead>
           <tbody>
-  {Array.isArray(filterattendance) && filterattendance.length > 0 ? (
-    filterattendance.map((attendanceData) => {
-      const userDetails = getUserDetails(attendanceData.userId);
+            {Array.isArray(filterattendance) && filterattendance.length > 0 ? (
+              filterattendance.map((attendanceData) => {
+                const userDetails = getUserDetails(attendanceData.userId);
 
-      return (
-        <tr key={attendanceData.id}>
+                return (
+                  <tr key={attendanceData.id}>
+                    <td>
+                      {attendanceData.image ? (
+                        <img
+                          src={attendanceData.image}
+                          width="50"
+                          height="50"
+                          alt="user"
+                          className="user_img"
+                        />
+                      ) : (
+                        "---"
+                      )}
+                    </td>
+                    <td>{userDetails?.user || "--"}</td>
+                    <td>{userDetails?.useremail || "--"}</td>
+                    <td>
+                      {attendanceData.loginTime
+                        ? new Date(attendanceData.loginTime).toLocaleString()
+                        : "--"}
+                    </td>
 
-          <td>
-            {attendanceData.image ? (
-              <img
-                src={attendanceData.image}
-                width="50"
-                height="50"
-                style={{
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                }}
-                alt="user"
-              />
+                    <td>
+                      {attendanceData.logoutTime
+                        ? new Date(attendanceData.logoutTime).toLocaleString()
+                        : "--"}
+                    </td>
+
+                    <td> <span class="badge">{attendanceData.workingHours || "--"}</span></td>
+
+                    <td style={{ cursor: "pointer" }}>
+                     <span  className="Location" onClick={() =>
+                        handleOpenmap(
+                          attendanceData.latitude,
+                          attendanceData.longitude,
+                        )
+                      }> <i class="fa-solid fa-map-pin"></i>View </span>   
+                    </td>
+                  </tr>
+                );
+              })
             ) : (
-              "---"
+              <tr>
+                <td colSpan={7} style={{ textAlign: "center" }}>
+                  No Attendance Found
+                </td>
+              </tr>
             )}
-          </td>
-         <td>{userDetails?.user || "--"}</td>
-          <td>{userDetails?.useremail || "--"}</td>
-          <td>
-            {attendanceData.loginTime
-              ? new Date(attendanceData.loginTime).toLocaleString()
-              : "--"}
-          </td>
-
-          <td>
-            {attendanceData.logoutTime
-              ? new Date(attendanceData.logoutTime).toLocaleString()
-              : "--"}
-          </td>
-
-          <td>{attendanceData.workingHours || "--"}</td>
-
-          <td
-            style={{ cursor: "pointer" }}
-            onClick={() =>
-              handleOpenmap(
-                attendanceData.latitude,
-                attendanceData.longitude
-              )
-            }
-          >
-            View Location
-          </td>
-        </tr>
-      );
-    })
-  ) : (
-    <tr>
-      <td colSpan={7} style={{ textAlign: "center" }}>
-        No Attendance Found
-      </td>
-    </tr>
-  )}
-</tbody>
+          </tbody>
         </table>
       </div>
     </>
