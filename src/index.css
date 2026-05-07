@@ -103,14 +103,6 @@ textarea {
   margin-bottom: 12px;
 }
 
-.from-group::before {
-  content: "Log in";
-}
-
-.form-group::before {
-  content: "Register";
-}
-
 .from-group h1,
 .form-group h1 {
   margin-bottom: 8px;
@@ -165,14 +157,6 @@ textarea {
   width: 100%;
   padding: 14px 18px;
   font-weight: 600;
-}
-
-.from-group p,
-.form-group p {
-  font-size: 15px;
-  color: var(--muted);
-  margin-top: 21px;
-  text-align: center;
 }
 
 .from-group a,
@@ -345,7 +329,12 @@ textarea {
   padding: 10px;
   border-radius: 10px;
 }
-
+.sub_title{
+  font-size: 13px;
+  font-weight: 400;
+  color: #484848;
+  padding-top: 4px;
+}
 .main {
   flex: 1;
   padding: 10px;

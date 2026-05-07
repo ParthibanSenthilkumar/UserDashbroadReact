@@ -146,6 +146,35 @@ const Modaluser = ({ show, handleClose, currentRow }) => {
           </Col>
           <Col lg={6}>
             <div className="form-item">
+              <label>Role</label>
+              <select
+                disabled={disabled}
+                value={isEdit?.role || "User"}
+                onChange={(e) =>
+                  setEdit({ ...isEdit, role: e.target.value })
+                }
+              >
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
+                <option value="Manager">Manager</option>
+              </select>
+            </div>
+          </Col>
+          <Col lg={6}>
+            <div className="form-item">
+              <label htmlFor="Address">Address</label>
+              <textarea
+                placeholder="Your Address"
+                disabled={disabled}
+                value={isEdit?.userText}
+                onChange={(e) =>
+                  setEdit({ ...isEdit, userText: e.target.value })
+                }
+              ></textarea>
+            </div>
+          </Col>
+          <Col lg={6}>
+            <div className="form-item">
               <label htmlFor="gender">Gender</label>
               <span>
                 <input
@@ -198,19 +227,7 @@ const Modaluser = ({ show, handleClose, currentRow }) => {
               </span>
             </div>
           </Col>
-          <Col lg={6}>
-            <div className="form-item">
-              <label htmlFor="Address">Address</label>
-              <textarea
-                placeholder="Your Address"
-                disabled={disabled}
-                value={isEdit?.userText}
-                onChange={(e) =>
-                  setEdit({ ...isEdit, userText: e.target.value })
-                }
-              ></textarea>
-            </div>
-          </Col>
+
           <Col lg={6}>
             <label htmlFor="image mb-3">image</label>
             <div className="form-item">
@@ -233,7 +250,5 @@ const Modaluser = ({ show, handleClose, currentRow }) => {
     </Modal>
   )
 }
-
-
 export default Modaluser
 

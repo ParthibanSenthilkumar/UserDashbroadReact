@@ -87,7 +87,7 @@ const Sidebar = () => {
           <div className="top_content">
             <h2>Dashboard</h2>
             <span className="live_clock">
-              <i class="fa-regular fa-clock"></i>
+              <i className="fa-regular fa-clock"></i>
               {Time}
             </span>
           </div>

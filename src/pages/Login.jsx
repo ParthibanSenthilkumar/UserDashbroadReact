@@ -87,6 +87,10 @@ const Login = () => {
                 </Col>
                 <Col lg={5} className="right-side">
                   <div className="from-group">
+                      <div className="head mb-5">
+                        <h2 className="title m-0">   Welcome back</h2>
+                        <p className="sub_title">Please login to continue accessing your account.</p> 
+                      </div>
                     <form onSubmit={handleSubmit}>
                       <div className="form-item">
                         <input

@@ -149,22 +149,11 @@ const Dashboard = () => {
                         <td> <span className="user_profile">{profile}</span> </td>
                         <td>{userData.user || "---"}</td>
                         <td>{userData.useremail || "--"}</td>
-                        <td><select value={Role}  onChange={(e)=>handleRole(userData.id,e.target.value)}>
-                          <option value="User">User</option>
-                          <option value="Admin">Admin</option>
-                          <option value="Manger">Manger</option>
-                          </select> </td>
+                        <td><span>{userData.role || "--"}</span></td>
                         <td>{userData.userAge || "--"}</td>
                         <td>{userData.phoneNo || "--"}</td>
-                        <td>
-                          <span className="badge">{userData.region || "--"}</span>
-                        </td>
-                        <td>
-                          <i
-                            className="fa-solid fa-pen-to-square"
-                            onClick={() => handleShow(userData)}
-                          ></i>
-                        </td>
+                        <td><span className="badge">{userData.region || "--"}</span></td>
+                        <td><i className="fa-solid fa-pen-to-square" onClick={() => handleShow(userData)}></i></td>
                       </tr>
                     );
                   })

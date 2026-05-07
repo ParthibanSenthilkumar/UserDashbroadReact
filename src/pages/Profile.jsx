@@ -39,13 +39,13 @@ const Profile = () => {
       <div className="row">
         <div className="col-lg-6">
           <div className="profile-box text-center">
-            <h3>{userdetails?.user}</h3>
-            <p className="text-muted">{userdetails?.useremail}</p>
             <img
               src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
               alt="profile"
               className="profile-img"
             />
+            <h3>{userdetails?.user}</h3>
+            <p className="text-muted">{userdetails?.useremail}</p>
             <div className="info_details d-flex align-items-center justify-content-evenly mt-5">
               <Link to="/attendance" className="btn-gradient" ><i className="fa-solid fa-arrow-right-to-bracket"></i> Attendance</Link>
               <Link to='#' className="btn-gradient"> <i className="fa-solid fa-share"></i> Share Now</Link>

@@ -135,7 +135,10 @@ const Register = () => {
               <Col lg={6}>
               <div className="right-side form-group1 "style={{boxShadow: "unset"}} >
                   <form onSubmit={handleSubmit}>
-                    <h2 className="title"> Register</h2>
+                    <div className="head mb-5">
+                      <h2 className="title m-0">  Create your account</h2>
+                      <p className="sub_title">get started with our platform today.</p> 
+                    </div>
                     <Row>
                       <Col lg={6}>
                         <div className="form-item">
