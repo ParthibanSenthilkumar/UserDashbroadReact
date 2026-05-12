@@ -486,9 +486,6 @@ table tr {
     linear-gradient(#e9eaff, #e9eaff) padding-box,
     linear-gradient(135deg, #667eea, #764ba2) border-box;
 }
-.Location{
-
-}
 .user-table i{
     font-size: 19px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
