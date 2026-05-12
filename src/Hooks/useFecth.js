@@ -9,7 +9,6 @@ const useFecth = (apiFunc) => {
 
   useEffect(() => {
     fetchdata();
-  }, [apiFunc]);
    let fetchdata = async () =>{
     try{
       setloading(true)
@@ -24,6 +23,7 @@ const useFecth = (apiFunc) => {
     }
    }
   return { userdata, loading, error }; //  return the state using other page
-};
+});
+}
 
 export default useFecth;
