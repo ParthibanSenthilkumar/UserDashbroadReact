@@ -39,14 +39,11 @@ const Sidebar = () => {
     }
   };
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  const userEmail = user?.email;
-  const adminEmails = [
-  "admin@gmail.com",
-  ];
-  const isAdmin = adminEmails.includes(userEmail);
-  const userName = userEmail.split("@")[0] || "user";
-
+const user = JSON.parse(localStorage.getItem("user"));
+const userEmail = user?.email?.toLowerCase();
+const adminEmails = ["jack@gmail.com"];
+const isAdmin = adminEmails.includes(userEmail);
+const userName = userEmail?.split("@")[0] || "user";
   return (
     <div className="wrapper d-flex align-items-stretch">
       <div className="sidebar">

@@ -6,9 +6,11 @@ const useFecth = (apiFunc) => {
   const [userdata, setuserdata] = useState([]);
   const [loading, setloading] = useState(false);
   const [error, seterror] = useState(null);
-
-  useEffect(() => {
+ 
+  useEffect(()=>{
     fetchdata();
+  },[])
+
    let fetchdata = async () =>{
     try{
       setloading(true)
@@ -23,7 +25,6 @@ const useFecth = (apiFunc) => {
     }
    }
   return { userdata, loading, error }; //  return the state using other page
-});
-}
+};
 
 export default useFecth;
