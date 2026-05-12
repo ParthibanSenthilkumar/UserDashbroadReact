@@ -5,11 +5,16 @@ import Card from 'react-bootstrap/Card';
 import Loader from '../Components/Loader'
 import { Usercontext } from "../Context/Usercreatecontext";
 import { Link } from "react-router-dom";
+import Qrmodal from "../Components/Qrmodal";
 
 const Profile = () => {
 
   const [userData, setUserData] = useState(null);
   const { userdetails,setuserdetails}=useContext(Usercontext)
+ 
+  const [show, setShow] = useState(false);
+   const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   console.log(userdetails,"userdetails");
   
@@ -33,6 +38,7 @@ const Profile = () => {
   }, []);
 
   return (
+    <>
 <div className="profile-page">
   {userData ? (
     <div className="profile-wrapper">
@@ -48,7 +54,8 @@ const Profile = () => {
             <p className="text-muted">{userdetails?.useremail}</p>
             <div className="info_details d-flex align-items-center justify-content-evenly mt-5">
               <Link to="/attendance" className="btn-gradient" ><i className="fa-solid fa-arrow-right-to-bracket"></i> Attendance</Link>
-              <Link to='#' className="btn-gradient"> <i className="fa-solid fa-share"></i> Share Now</Link>
+              <button className="btn-gradient" onClick={handleShow}> <i className="fa-solid fa-share"></i> Qr Open Now</button>
+
             </div>
           </div>
         </div>
@@ -91,6 +98,9 @@ const Profile = () => {
     </div>
   )}
 </div>
+
+<Qrmodal  show={show} handleShow={handleShow} handleClose={handleClose} userdetails={userdetails} />
+</>
 );
 }
 export default Profile;

@@ -335,12 +335,16 @@ textarea {
   color: #484848;
   padding-top: 4px;
 }
+.wrapper {
+  overflow: hidden;
+}
 .main {
   flex: 1;
   padding: 10px;
 }
 .main-content {
   margin-top: 15px;
+  overflow: hidden;
 }
 .cart-group {
   display: grid;
@@ -550,4 +554,26 @@ table tr {
   border-radius: 10px;
   gap: 20px;
   color: #fff;
+}
+.profile-container{
+  background: #fff;
+  max-width: 500px;
+  width: 100%;
+  margin: auto;
+  padding: 30px;
+  text-align: center;
+  border-radius: 10px;
+}
+.welcomePage{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+@media (max-width:991px){
+  .cart-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(315px, 250px));
+  }
 }

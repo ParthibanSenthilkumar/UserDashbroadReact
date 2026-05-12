@@ -41,6 +41,10 @@ const Sidebar = () => {
 
   const user = JSON.parse(localStorage.getItem("user"));
   const userEmail = user?.email;
+  const adminEmails = [
+  "admin@gmail.com",
+  ];
+  const isAdmin = adminEmails.includes(userEmail);
   const userName = userEmail.split("@")[0] || "user";
 
   return (
@@ -52,11 +56,15 @@ const Sidebar = () => {
           <p>Welcome to our dashboard</p>
         </div>
         <ul>
+          {isAdmin && (
           <li className="nav-links">
             <Nav.Link as={Link} to="admin">
               Admin
             </Nav.Link>
           </li>
+          )}
+
+          
 
           <li className="nav-links">
             <Nav.Link as={Link} to="profile">
