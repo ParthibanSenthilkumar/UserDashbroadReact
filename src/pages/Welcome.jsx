@@ -3,7 +3,7 @@ import React from 'react'
 const Welcome = () => {
 const user = JSON.parse(localStorage.getItem("user"));
   const userEmail = user?.email;
-   const userName = userEmail.split("@")[0] || "user";
+   const userName = userEmail?.split("@")[0] || "user";
   return (
     <>
     <section className='welcomePage'>

@@ -336,20 +336,26 @@ textarea {
   color: #484848;
   padding-top: 4px;
 }
-.wrapper {
-  overflow: hidden;
-}
 .main {
   flex: 1;
   padding: 10px;
 }
-.main-content {
-  margin-top: 15px;
-  overflow: hidden;
+.table_gr {
+  width: 100%;
+  overflow-x: auto;
 }
+
+.table_gr table {
+  min-width: 900px;
+  width: 100%;
+}
+.wrapper {
+  overflow-x: hidden;
+}
+
 .cart-group {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 250px));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
   margin: 30px 10px;
 }
@@ -577,18 +583,11 @@ table tr {
   padding: 30px;
 }
 
-@media (max-width:1200px){
-  .cart-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(315px, 250px));
-  }
-}
+
+
 
 @media (max-width:992px){
-  .cart-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(347px, 250px));
-  }
+
 .menu-toggle {
     display: block;
     background: transparent;
@@ -608,30 +607,71 @@ table tr {
   .sidebar.active {
     left: 0;
   }
-  .table_gr {
-    width: 100%;
-    overflow-x: auto;
-  }
-  .table_gr table {
-    min-width: 800px; 
-    white-space: nowrap;
-  }
+.table_gr {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table_gr table {
+  min-width: 900px;
+  width: 100%;
+}
   .cart-group {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 250px));
     }
 
 }
+/* MOBILE FIX */
+@media (max-width:768px){
 
-@media (max-width:576px){
+  .search_part{
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
 
-  .cart-group {
-    display: grid;
-    grid-template-columns: 1fr;
-    max-width: 379px;
+  .search_box{
     width: 100%;
   }
-  .login-card{
+
+  .search_box input{
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .table_gr{
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .table_gr table{
+    min-width: 900px;
+    width: 100%;
+  }
+
+  .main,
+  .main-content,
+  .user-table{
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .wrapper{
+    overflow-x: hidden;
+  }
+}
+
+@media (max-width:576px){
+  .btn-gradient{
+      font-size: 13px;
+  }
+  .login-card h1 {
+    font-size: 26px;
+  }
+  .login-card {
     padding: 15px;
+  }
+  .status_box {
+    max-width: 150px;
   }
 }

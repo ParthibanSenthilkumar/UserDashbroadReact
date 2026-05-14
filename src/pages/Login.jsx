@@ -1,6 +1,6 @@
-﻿import React, { useContext, useState } from "react";
+﻿import React, { useContext, useEffect, useState } from "react";
 import { auth } from "../Services/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { errorToast, successToast } from "../Components/Toaster";
@@ -16,6 +16,23 @@ const Login = () => {
 
   let navigate = useNavigate();
   const { setuserdetails } = useContext(Usercontext);
+  
+  useEffect(()=>{
+    const unsubscribe =onAuthStateChanged(auth,(loguser)=>{
+      if(loguser){
+      const userEmail = loguser.email?.toLowerCase();
+      const adminEmails = ["jack@gmail.com"];
+      const isAdmin = adminEmails.includes(userEmail);
+      if(isAdmin){
+        navigate("/dashboard/admin")
+      }
+      else{
+        navigate("/dashboard/welcome")
+      }
+      }
+    })
+    return ()=>unsubscribe ()
+  },[])
 
   let handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,7 +68,7 @@ const Login = () => {
       setlog("");
       setpass("");
 
-      (successToast("Login Successfull"), navigate("/dashboard"));
+      successToast("Login Successfull");
     } catch (error) {
       errorToast(error.message);
       // console.log(error.message);

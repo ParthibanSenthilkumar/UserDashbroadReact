@@ -171,6 +171,7 @@ const Dashboard = () => {
 
       
       {/* ATTENDANCE TABLE */}
+
       <div className="user-table mt-5">
         <div className="search_part">
           <h3 className="title"><i className="fa-regular fa-user"></i>  Login Activity </h3>
@@ -209,6 +210,7 @@ const Dashboard = () => {
             </div>
           )}
         </div>
+        <div className="table_gr">
         <table className="table table-borderless text-center">
           <thead>
             <tr>
@@ -277,7 +279,9 @@ const Dashboard = () => {
             )}
           </tbody>
         </table>
+        </div>
       </div>
+      
     </>
   );
 };

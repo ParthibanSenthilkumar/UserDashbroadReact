@@ -20,7 +20,7 @@ const handleTime = () => {
 const Sidebar = () => {
   const [Time, setTime] = useState(handleTime());
   const [showSidebar,setShowSidebar]=useState(false)
-
+   
   useEffect(() => {
     const interval = setInterval(() => {
       setTime(handleTime());
@@ -100,7 +100,7 @@ const userName = userEmail?.split("@")[0] || "user";
                 {Time}
               </span>
               <button className="menu-toggle"onClick={()=>setShowSidebar(!showSidebar) } >
-                <i class="fa-solid fa-bars"></i>
+                <i className="fa-solid fa-bars"></i>
               </button>
             </div> 
           </div>  
