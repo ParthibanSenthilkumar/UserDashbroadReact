@@ -15,15 +15,14 @@ const Login = () => {
   let [userpass, setpass] = useState("");
 
   let navigate = useNavigate();
-  const { setuserdetails } = useContext(Usercontext);
+  const { userdetails, setuserdetails } = useContext(Usercontext);
   
   useEffect(()=>{
     const unsubscribe =onAuthStateChanged(auth,(loguser)=>{
       if(loguser){
       const userEmail = loguser.email?.toLowerCase();
-      const adminEmails = ["jack@gmail.com"];
-      const isAdmin = adminEmails.includes(userEmail);
-      if(isAdmin){
+      const isAdmin = userdetails?.role;
+      if(isAdmin === "admin"){
         navigate("/dashboard/admin")
       }
       else{

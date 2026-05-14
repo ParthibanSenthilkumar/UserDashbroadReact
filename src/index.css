@@ -355,7 +355,7 @@ textarea {
 
 .cart-group {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
   margin: 30px 10px;
 }
@@ -593,6 +593,9 @@ table tr {
     background: transparent;
     font-size: 25px;
     border: none;
+  }
+  .cart-group {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
 
   .sidebar {

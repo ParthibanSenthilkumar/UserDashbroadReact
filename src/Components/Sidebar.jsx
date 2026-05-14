@@ -3,6 +3,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Nav } from "react-bootstrap";
 import { signOut } from "firebase/auth";
 import { auth } from "../Services/firebase";
+import { Usercontext } from "../Context/Usercreatecontext";
 
 const formatTime = (date) => {
   return date.toLocaleTimeString([], {
@@ -39,11 +40,12 @@ const Sidebar = () => {
       console.error(error);
     }
   };
-
+let {userdetails} =useContext(Usercontext)
 const user = JSON.parse(localStorage.getItem("user"));
 const userEmail = user?.email?.toLowerCase();
-const adminEmails = ["jack@gmail.com"];
-const isAdmin = adminEmails.includes(userEmail);
+// const adminEmails = ["jack@gmail.com"];
+// const isAdmin = adminEmails.includes(userEmail);
+const isAdmin = userdetails?.role;
 const userName = userEmail?.split("@")[0] || "user";
   return (
     <div className="wrapper d-flex align-items-stretch">
