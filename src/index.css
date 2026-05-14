@@ -566,10 +566,15 @@ table tr {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 100vh;   
 }
 .menu-toggle{
   display: none;
+}
+.profile-container{
+  background: #fff !important;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  padding: 30px;
 }
 
 @media (max-width:1200px){
@@ -580,17 +585,53 @@ table tr {
 }
 
 @media (max-width:992px){
-    .menu-toggle {
+  .cart-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(347px, 250px));
+  }
+.menu-toggle {
     display: block;
+    background: transparent;
+    font-size: 25px;
+    border: none;
   }
 
   .sidebar {
+    position: fixed;
     left: -100%;
     top: 0;
+    height: 100vh;
+    width: 260px;
     transition: 0.3s;
   }
 
   .sidebar.active {
     left: 0;
+  }
+  .table_gr {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .table_gr table {
+    min-width: 800px; 
+    white-space: nowrap;
+  }
+  .cart-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 250px));
+    }
+
+}
+
+@media (max-width:576px){
+
+  .cart-group {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 379px;
+    width: 100%;
+  }
+  .login-card{
+    padding: 15px;
   }
 }

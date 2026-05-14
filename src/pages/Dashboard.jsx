@@ -121,6 +121,7 @@ const Dashboard = () => {
             />
           </div>
         </div>
+        <div className="table_gr">
         <table className="table table-borderless text-center">
           <thead>
             <tr>
@@ -159,6 +160,7 @@ const Dashboard = () => {
                 )}
               </tbody>
         </table>
+        </div>
       </div>
 
       <Modaluser

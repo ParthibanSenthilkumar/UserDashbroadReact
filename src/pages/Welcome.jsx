@@ -7,7 +7,7 @@ const user = JSON.parse(localStorage.getItem("user"));
   return (
     <>
     <section className='welcomePage'>
-        <div className="profile-container">
+      <div className="profile-container">
           <h2>Welcome  Our Dashboard !</h2>
             <img
               src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"

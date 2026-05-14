@@ -19,6 +19,7 @@ const handleTime = () => {
 
 const Sidebar = () => {
   const [Time, setTime] = useState(handleTime());
+  const [showSidebar,setShowSidebar]=useState(false)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -46,7 +47,7 @@ const isAdmin = adminEmails.includes(userEmail);
 const userName = userEmail?.split("@")[0] || "user";
   return (
     <div className="wrapper d-flex align-items-stretch">
-      <div className="sidebar">
+      <div className={`sidebar ${showSidebar ? "active":""}`}>
         <h2 className="h6 text-center pt-2">User Dashbroad</h2>
         <div className="side_user_details">
           <h2>{userName}</h2>
@@ -90,16 +91,22 @@ const userName = userEmail?.split("@")[0] || "user";
       <div className="main">
         <div className="topbar">
           <div className="top_content">
-            <h2>Dashboard</h2>
-            <span className="live_clock">
-              <i className="fa-regular fa-clock"></i>
-              {Time}
-            </span>
-          </div>
-          
+            <div className="left">
+              <h2>Dashboard</h2>
+            </div>
+            <div className=" d-flex align-items-center gap-3">
+              <span className="live_clock">
+                <i className="fa-regular fa-clock"></i>
+                {Time}
+              </span>
+              <button className="menu-toggle"onClick={()=>setShowSidebar(!showSidebar) } >
+                <i class="fa-solid fa-bars"></i>
+              </button>
+            </div> 
+          </div>  
         </div>
         <div className="main-content">
-          <Outlet />{" "}
+          <Outlet />
           {/* child components rendering like eg: user.jsx,admin.jsx */}
         </div>
       </div>
