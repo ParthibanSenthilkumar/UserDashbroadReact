@@ -5,6 +5,8 @@ import { errorToast } from "../Components/Toaster";
 import Modaluser from "../Components/Modaluser";
 import { getData, AttandanceData } from "../Services/Api";
 import useFecthAttendance from "../Hooks/useFecthAttendance";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 const Dashboard = () => {
   // fetch data
@@ -82,6 +84,60 @@ const Dashboard = () => {
     }
   });
   
+  const handleExportUsers =()=>{
+     
+    const exportData= userdata.map((item,index)=>({
+      SNo: index + 1,
+      Name: item.user || "--",
+      Email: item.useremail || "--",
+      Role: item.role || "--",
+      Age: item.userAge || "--",
+      Phone: item.phoneNo || "--",
+      Region: item.region || "--",
+    }))
+    let worksheet=XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Users");
+    const excelBuffer = XLSX.write(workbook,  
+      { 
+        bookType: 'xlsx',
+        type: 'array' 
+      });
+    const data = new Blob([excelBuffer],{
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+    });
+    saveAs(data, "UsersData.xlsx" );
+  }
+
+  const handleAttendanceExport = ()=>{
+    
+    const attendanceExport = filterattendance.map((index,item)=>{
+        const userDetails = getUserDetails(item.userId);
+      return{
+        SNo:index+1,
+        Username: userDetails?.user || "--",
+        Email: userDetails?.useremail || "--",
+        Logintime:item.logintime
+        ? new Date(item.loginTime).toLocaleString() : "",
+        LogoutTime: item.logoutTime
+        ? new Date(item.logoutTime).toLocaleString()
+        : "--",
+        WorkingHours: item.workingHours || "--",
+        Status:item.status || "--"
+      }})
+      let worksheet=XLSX.utils.json_to_sheet(attendanceExport);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook,worksheet,"Attendance");
+      const excelBuffer = XLSX.write(workbook,  
+          { 
+            bookType: 'xlsx',
+            type: 'array' 
+          });
+        const data = new Blob([excelBuffer],{
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+        });
+        saveAs(data, "Attendancedata.xlsx" );
+      }
   
   return (
     <>
@@ -112,13 +168,16 @@ const Dashboard = () => {
         <div className="search_part">
           <h3 className="title"><i className="fa-regular fa-user"></i> All User</h3>
           <div className="search_box mb-2 form-item ">
-            <i className="fa-solid fa-magnifying-glass"></i>
-            <input
-              type="text"
-              placeholder="Search by Name..."
-              value={userSearch}
-              onChange={(e) => setuserSearch(e.target.value)}
-            />
+            <div className="input_box">
+              <i className="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                placeholder="Search by Name..."
+                value={userSearch}
+                onChange={(e) => setuserSearch(e.target.value)}
+              />
+            </div>
+            <button  className="btn btn-filter"  onClick={handleExportUsers}> Export </button>  
           </div>
         </div>
         <div className="table_gr">
@@ -155,7 +214,7 @@ const Dashboard = () => {
                   })
                 ) : (
                   <tr>
-                    <td colSpan={5}>User Not found</td>
+                    <td colSpan={9}>User Not found</td>
                   </tr>
                 )}
               </tbody>
@@ -196,6 +255,7 @@ const Dashboard = () => {
             >
               Date Wise
             </button>
+            <button className="btn btn-filter" onClick={handleAttendanceExport}>Export</button>
           </div>
 
           {/* DATE PICKER */}

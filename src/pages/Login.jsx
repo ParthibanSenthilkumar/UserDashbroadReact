@@ -16,22 +16,23 @@ const Login = () => {
 
   let navigate = useNavigate();
   const { userdetails, setuserdetails } = useContext(Usercontext);
-  
-  useEffect(()=>{
-    const unsubscribe =onAuthStateChanged(auth,(loguser)=>{
-      if(loguser){
-      const userEmail = loguser.email?.toLowerCase();
-      const isAdmin = userdetails?.role;
-      if(isAdmin === "admin"){
-        navigate("/dashboard/admin")
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (loguser) => {
+      if (loguser) {
+        let Alluserdetails = await loginDataFetch(loguser.uid);
+        setuserdetails(Alluserdetails);
+        const role = Alluserdetails?.role;
+
+        if (role === "Admin") {
+          navigate("/dashboard/admin");
+        } else {
+          navigate("/dashboard/welcome");
+        }
       }
-      else{
-        navigate("/dashboard/welcome")
-      }
-      }
-    })
-    return ()=>unsubscribe ()
-  },[])
+    });
+    return () => unsubscribe();
+  }, []);
 
   let handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,7 +50,7 @@ const Login = () => {
           email: user.email,
         }),
       );
-      
+
       let Alluserdetails = await loginDataFetch(user.uid);
       setuserdetails(Alluserdetails);
       localStorage.setItem("userdetails", JSON.stringify(Alluserdetails));
@@ -103,10 +104,12 @@ const Login = () => {
                 </Col>
                 <Col lg={5} className="right-side">
                   <div className="from-group">
-                      <div className="head mb-5">
-                        <h2 className="title m-0">   Welcome back</h2>
-                        <p className="sub_title">Please login to continue accessing your account.</p> 
-                      </div>
+                    <div className="head mb-5">
+                      <h2 className="title m-0"> Welcome back</h2>
+                      <p className="sub_title">
+                        Please login to continue accessing your account.
+                      </p>
+                    </div>
                     <form onSubmit={handleSubmit}>
                       <div className="form-item">
                         <input

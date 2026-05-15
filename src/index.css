@@ -231,6 +231,11 @@ textarea {
 .search_box {
   position: relative;
 }
+.search_box{
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  place-items: center;
+}
 .search_box input {
   width: 500px;
   padding: 8px 10px 8px 35px;

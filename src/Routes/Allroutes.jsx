@@ -12,11 +12,11 @@ import Welcome from "../pages/Welcome";
 import { Usercontext } from "../Context/Usercreatecontext";
 
 const Allroutes = () => {
-  let {userdetails} =useContext(Usercontext)
-  const user = JSON.parse(localStorage.getItem("user"));
+  let { userdetails } = useContext(Usercontext);
+  // const user = JSON.parse(localStorage.getItem("user"));
   // const adminEmails = ["jack@gmail.com"];
-  const isAdmin = userdetails?.role;
- 
+  const isAdmin = userdetails?.role === "Admin";
+
   return (
     <>
       <Routes>
@@ -24,10 +24,11 @@ const Allroutes = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Sidebar />}>
-          
           <Route
             index
-            element={isAdmin ? <Navigate to="admin"/> : <Navigate to="welcome" />}
+            element={
+              isAdmin ? <Navigate to="admin" /> : <Navigate to="welcome" />
+            }
           />
           <Route path="welcome" element={<Welcome />} />
           <Route
